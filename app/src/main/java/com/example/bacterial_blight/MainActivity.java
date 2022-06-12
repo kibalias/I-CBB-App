@@ -154,12 +154,11 @@ public class MainActivity extends AppCompatActivity {
 
         BottomSheetDialog bottom_sheet = new BottomSheetDialog(MainActivity.this,R.style.BottomSheetTheme);
         View sheetView = null;
-        if(result == "CBB"){
+        if(result.equals("CBB")){
             //display the bottom sheet result
-
             sheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_pop_result,
                     findViewById(R.id.popUpContainer));
-        } else if(result == "Healthy"){
+        } else if(result.equals("Healthy")){
             sheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_pop_healthy_result,
                     findViewById(R.id.popUpContainer));
         }
