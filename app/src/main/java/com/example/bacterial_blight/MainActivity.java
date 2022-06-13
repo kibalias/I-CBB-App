@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.bacterial_blight.ml.Model;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -63,19 +64,23 @@ public class MainActivity extends AppCompatActivity {
         scan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Resizes the image for classification
-                image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false);
+                //Checks if an image has been selected. If no message, return a toast message.
+                if(image == null){
+                    Toast.makeText(MainActivity.this, "Cannot perform prediction. Select an image.", Toast.LENGTH_LONG).show();
+                } else {
+                    //Resizes the image for classification
+                    image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false);
+                    int model = radioGroup.getCheckedRadioButtonId();
+                    chosenModel = findViewById(model);
 
-                int model = radioGroup.getCheckedRadioButtonId();
-                chosenModel = findViewById(model);
-
-                switch(model){
-                    case R.id.vggRadioBtn:
-                        result.setText("Feature coming soon.");
-                        break;
-                    case R.id.resNetRadioBtn:
-                        resNet(image);
-                        break;
+                    switch(model){
+                        case R.id.vggRadioBtn:
+                            result.setText("Feature coming soon.");
+                            break;
+                        case R.id.resNetRadioBtn:
+                            resNet(image);
+                            break;
+                    }
                 }
             }
         });
@@ -83,14 +88,17 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        /*
+         *Get the selected image from the gallery and display to the placeholder
+         */
         super.onActivityResult(requestCode, resultCode, data);
             if(resultCode == RESULT_OK && data != null){
-                //Gets image from the gallery and displays to placeholder
                 Uri selectedImage = data.getData();
 
                 try{
                     image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
                 } catch (IOException e){
+                    Toast.makeText(MainActivity.this, "An error has occured.", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
                 }
                 placeholder.setImageBitmap(image);
@@ -98,6 +106,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
     public void resNet(Bitmap image){
+        /*
+         * This method loads the ResNet-50 model
+         * and scans through the input message for prediction
+         */
         try {
             Model model = Model.newInstance(getApplicationContext());
 
@@ -147,13 +159,18 @@ public class MainActivity extends AppCompatActivity {
             model.close();
         } catch (IOException e) {
             // TODO Handle the exception
+            Toast.makeText(MainActivity.this, "An error has occured.", Toast.LENGTH_LONG).show();
         }
     }
 
     public void resultPop(String result){
-
+        /*
+         * This method accepts the prediction from VGG-19 or ResNet-50 Model
+         * and display the corresponding bottom sheet accdg. to the result
+         */
         BottomSheetDialog bottom_sheet = new BottomSheetDialog(MainActivity.this,R.style.BottomSheetTheme);
         View sheetView = null;
+
         if(result.equals("CBB")){
             //display the bottom sheet result
             sheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_pop_result,
