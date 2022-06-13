@@ -152,7 +152,6 @@ public class MainActivity extends AppCompatActivity {
             String[] classes = {"CBB", "Healthy"};
             //Display the class of the prediction
             result.setText(classes[maxPos]);
-
             resultPop(classes[maxPos]);
 
             // Releases model resources if no longer used.
