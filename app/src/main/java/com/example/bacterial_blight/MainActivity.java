@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bacterial_blight.ml.Model;
+import com.example.bacterial_blight.ml.Vgg19;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import org.checkerframework.common.subtyping.qual.Bottom;
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
                     switch(model){
                         case R.id.vggRadioBtn:
-                            result.setText("Feature coming soon.");
+                            vgg19(image);
                             break;
                         case R.id.resNetRadioBtn:
                             resNet(image);
@@ -108,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
     public void resNet(Bitmap image){
         /*
          * This method loads the ResNet-50 model
-         * and scans through the input message for prediction
+         * and scans through the input image for prediction
          */
         try {
             Model model = Model.newInstance(getApplicationContext());
@@ -161,6 +162,64 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, "An error has occured.", Toast.LENGTH_LONG).show();
         }
     }
+
+    public void vgg19(Bitmap image){
+        /*
+         * This method loads the VGG19 model
+         * and scans through the input image for prediction
+         */
+        try {
+            Vgg19 model = Vgg19.newInstance(getApplicationContext());
+
+            // Creates inputs for reference.
+            TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 224, 224, 3}, DataType.FLOAT32);
+
+            ByteBuffer byteBuffer = ByteBuffer.allocateDirect(4 * imageSize * imageSize * 3);
+            byteBuffer.order(ByteOrder.nativeOrder());
+
+            int[] intValues = new int[imageSize * imageSize];
+            image.getPixels(intValues, 0, image.getWidth(), 0, 0, image.getWidth(), image.getHeight());
+            int pixel = 0;
+            //iterate over each pixels and extract RGB values. Values will be added individually to the byte buffer
+            for(int i = 0; i < imageSize; i++){
+                for(int j = 0; j < imageSize; j++){
+                    int val = intValues[pixel++]; //RGB
+                    byteBuffer.putFloat(((val >> 16) & 0xFF) * (1.f/1));
+                    byteBuffer.putFloat(((val >> 8) & 0xFF) * (1.f/1));
+                    byteBuffer.putFloat((val & 0xFF) * (1.f/1));
+                }
+            }
+
+            inputFeature0.loadBuffer(byteBuffer);
+
+            // Runs model inference and gets result.
+            Vgg19.Outputs outputs = model.process(inputFeature0);
+            TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
+
+            float[] confidences = outputFeature0.getFloatArray();
+            //find the index of class with big confidence
+            int maxPos = 0;
+            float maxConfidence = 0;
+            for (int i = 0; i < confidences.length; i++){
+                if(confidences[i] > maxConfidence){
+                    maxConfidence = confidences[i];
+                    maxPos = i;
+                }
+            }
+
+            String[] classes = {"CBB", "Healthy"};
+            //Display the class of the prediction
+            result.setText(classes[maxPos]);
+            resultPop(classes[maxPos]);
+
+            // Releases model resources if no longer used.
+            model.close();
+        } catch (IOException e) {
+            // TODO Handle the exception
+            Toast.makeText(MainActivity.this, "An error has occured.", Toast.LENGTH_LONG).show();
+        }
+    }
+
 
     public void resultPop(String result){
         /*
