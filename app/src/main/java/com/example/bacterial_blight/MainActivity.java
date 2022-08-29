@@ -35,9 +35,7 @@ import java.nio.ByteOrder;
 public class MainActivity extends AppCompatActivity {
     Button select, scan;
     ImageView placeholder;
-    TextView result, confidence, link;
-    RadioGroup radioGroup;
-    RadioButton chosenModel;
+    TextView vggResult, resnetResult, confidence, link;
     Bitmap image = null;
     int imageSize =  224;
 
@@ -48,9 +46,9 @@ public class MainActivity extends AppCompatActivity {
 
         select = findViewById(R.id.upload_button);
         scan = findViewById(R.id.scan_button);
-        result = findViewById(R.id.result);
+        vggResult = findViewById(R.id.vggResult);
+        resnetResult = findViewById(R.id.resnetResult);
         placeholder = findViewById(R.id.image_placeholder);
-        radioGroup = findViewById(R.id.radioGroup);
 
         //Select Image Button
         select.setOnClickListener(new View.OnClickListener() {
@@ -71,17 +69,9 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     //Resizes the image for classification
                     image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false);
-                    int model = radioGroup.getCheckedRadioButtonId();
-                    chosenModel = findViewById(model);
 
-                    switch(model){
-                        case R.id.vggRadioBtn:
                             vgg19(image);
-                            break;
-                        case R.id.resNetRadioBtn:
                             resNet(image);
-                            break;
-                    }
                 }
             }
         });
@@ -152,9 +142,7 @@ public class MainActivity extends AppCompatActivity {
 
             String[] classes = {"CBB", "Healthy"};
             //Display the class of the prediction
-            result.setText(classes[maxPos]);
-
-            resultPop(classes[maxPos]);
+            resnetResult.setText(classes[maxPos]);
 
             // Releases model resources if no longer used.
             model.close();
@@ -210,8 +198,7 @@ public class MainActivity extends AppCompatActivity {
 
             String[] classes = {"CBB", "Healthy"};
             //Display the class of the prediction
-            result.setText(classes[maxPos]);
-            resultPop(classes[maxPos]);
+            vggResult.setText(classes[maxPos]);
 
             // Releases model resources if no longer used.
             model.close();
@@ -221,6 +208,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /* ---------------------------------------------
+    * Pop up for result and control measures for CBB
+    * Update: Not needed.
+    *  ---------------------------------------------
+    */
     public void resultPop(String result){
         /*
          * This method accepts the prediction from VGG-19 or ResNet-50 Model
