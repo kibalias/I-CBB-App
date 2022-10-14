@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         select.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vggResult.setText("Result");
+                resnetResult.setText("Result");
                 Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, 3);
             }
@@ -69,9 +71,9 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     //Resizes the image for classification
                     image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false);
-
-                            vgg19(image);
-                            resNet(image);
+                        //Pass the image to the models to make a prediction
+                        vgg19(image);
+                        resNet(image);
                 }
             }
         });
@@ -89,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                 try{
                     image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
                 } catch (IOException e){
-                    Toast.makeText(MainActivity.this, "An error has occured.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "An error has occurred.", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
                 }
                 placeholder.setImageBitmap(image);
@@ -148,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
             model.close();
         } catch (IOException e) {
             // TODO Handle the exception
-            Toast.makeText(MainActivity.this, "An error has occured.", Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, "An error has occurred.", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -204,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
             model.close();
         } catch (IOException e) {
             // TODO Handle the exception
-            Toast.makeText(MainActivity.this, "An error has occured.", Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, "An error has occurred.", Toast.LENGTH_LONG).show();
         }
     }
 
