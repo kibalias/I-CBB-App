@@ -4,8 +4,8 @@ Prototype application for detection of Cassava Bacterial Blight using Android St
 
 ## Modules
 1. Segmentation using OpenCV
-2. CNN Models
-   2.1 VGG19
+2. CNN Models <br/>
+   2.1 VGG19 <br/>
    2.2 ResNet50
 
 ## Dependencies
