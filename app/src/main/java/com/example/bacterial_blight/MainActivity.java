@@ -6,11 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.method.LinkMovementMethod;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +22,9 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.chaquo.python.PyObject;
+import com.chaquo.python.Python;
+import com.chaquo.python.android.AndroidPlatform;
 import com.example.bacterial_blight.ml.Model;
 import com.example.bacterial_blight.ml.Vgg19;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -28,15 +33,18 @@ import org.checkerframework.common.subtyping.qual.Bottom;
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 public class MainActivity extends AppCompatActivity {
     Button select, scan;
-    ImageView placeholder;
+    ImageView placeholder, placeholder1;
     TextView vggResult, resnetResult, confidence, link;
     Bitmap image = null;
+    Bitmap segmentedImage = null;
+    String imageString = "";
     int imageSize =  224;
 
     @Override
@@ -70,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Cannot perform prediction. Select an image.", Toast.LENGTH_LONG).show();
                 } else {
                     //Resizes the image for classification
-                    image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false);
+                    image = Bitmap.createScaledBitmap(segmentedImage, imageSize, imageSize, false);
                         //Pass the image to the models to make a prediction
                         vgg19(image);
                         resNet(image);
@@ -94,7 +102,9 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "An error has occurred.", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
                 }
+                image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false);
                 placeholder.setImageBitmap(image);
+                segmentation(image);
             }
         }
 
@@ -208,6 +218,51 @@ public class MainActivity extends AppCompatActivity {
             // TODO Handle the exception
             Toast.makeText(MainActivity.this, "An error has occurred.", Toast.LENGTH_LONG).show();
         }
+    }
+
+    public void segmentation(Bitmap image){
+        /*
+         *   this function calls the python instance to perform segmentation
+         */
+
+        //store the encoded image to imageString and pass to python script
+        imageString = getStringImage(image);
+
+        //calling Python modules and function
+        if (! Python.isStarted()) {
+            Python.start(new AndroidPlatform(this));
+        }
+
+        final Python py = Python.getInstance();
+        try{
+            PyObject pyObj = py.getModule("segmentation");
+            PyObject obj = pyObj.callAttr("main", imageString);
+
+            //get the String image from the python function
+            String str = obj.toString();
+            //convert the string to byte array
+            byte data[] = android.util.Base64.decode(str, Base64.DEFAULT);
+            //convert the byte to Bitmap
+            segmentedImage = BitmapFactory.decodeByteArray(data, 0, data.length);
+
+            // NOTE: remove comment when asked to display the segmented image
+            // placeholder.setImageBitmap(segmentedImage);
+        } catch (Exception e){
+            Toast.makeText(MainActivity.this, "An error has occurred.", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
+
+    }
+
+    private String getStringImage(Bitmap image) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.PNG, 100, baos);
+
+        //store image in byte array
+        byte[] convertedImageByte = baos.toByteArray();
+        //encode to string
+        String encodedImage = android.util.Base64.encodeToString(convertedImageByte,Base64.DEFAULT);
+        return encodedImage;
     }
 
     /* ---------------------------------------------

@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.application'
+    id 'com.chaquo.python'
 }
 
 android {
@@ -13,11 +14,33 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters "armeabi-v7a", "x86"
+        }
+
+        python {
+            buildPython "C:/Users/JAN NICOLE CASILLAN/AppData/Local/Programs/Python/Python38/python.exe"
+
+            pip {
+                install "numpy"
+                install "opencv-python"
+                install "Pillow"
+                install "pybase64"
+            }
+        }
+
+        sourceSets {
+            main {
+                python.srcDir "src/main/python"
+            }
+        }
+
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
