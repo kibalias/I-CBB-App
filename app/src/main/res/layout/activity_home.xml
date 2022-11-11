@@ -28,7 +28,7 @@
         android:layout_marginTop="8dp"
         android:fontFamily="@font/alata"
         android:gravity="center"
-        android:text="i-CBacterialBlight App ay simpleng pagtukoy ng sakit sa dahon ng Cassava."
+        android:text="i-CBacterialBlight App ay magagamit sa pagtukoy ng sakit sa dahon ng Cassava."
         android:textColor="#474747"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
