@@ -27,8 +27,8 @@ import android.widget.Toast;
 import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
+import com.example.bacterial_blight.ml.GoodResnet;
 import com.example.bacterial_blight.ml.Model;
-import com.example.bacterial_blight.ml.Vgg19;
 import com.example.bacterial_blight.ml.Vgg1948c41h;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
@@ -123,9 +123,9 @@ public class MainActivity extends AppCompatActivity {
                 image = (Bitmap) data.getExtras().get("data");
                 int dimension = Math.min(image.getWidth(), image.getHeight());
                 image = ThumbnailUtils.extractThumbnail(image, dimension, dimension);
+                placeholder.setImageBitmap(image);
 
                 image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false);
-                placeholder.setImageBitmap(image);
                 segmentation(image);
             }
             else {
@@ -133,12 +133,12 @@ public class MainActivity extends AppCompatActivity {
 
                 try{
                     image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+                    placeholder.setImageBitmap(image);
                 } catch (IOException e){
                     Toast.makeText(MainActivity.this, "An error has occurred.", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
                 }
                 image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false);
-                placeholder.setImageBitmap(image);
                 segmentation(image);
             }
         }
@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
          * and scans through the input message for prediction
          */
         try {
-            Model model = Model.newInstance(getApplicationContext());
+            GoodResnet model = GoodResnet.newInstance(getApplicationContext());
 
             // Creates inputs for reference.
             TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 224, 224, 3}, DataType.FLOAT32);
@@ -174,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
             inputFeature0.loadBuffer(byteBuffer);
 
             // Runs model inference and gets result.
-            Model.Outputs outputs = model.process(inputFeature0);
+            GoodResnet.Outputs outputs = model.process(inputFeature0);
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
             float[] confidences = outputFeature0.getFloatArray();

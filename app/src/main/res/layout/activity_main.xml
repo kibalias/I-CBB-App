@@ -15,7 +15,7 @@
         android:layout_marginBottom="3dp"
         android:backgroundTint="#CDDC39"
         android:fontFamily="@font/alata"
-        android:text="CAPTURE"
+        android:text="CAPTURE IMAGE"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="#000000"
@@ -23,18 +23,18 @@
         app:cornerRadius="10dp"
         app:layout_constraintBottom_toTopOf="@+id/scan_button"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/upload_button"
-        app:layout_constraintVertical_bias="0.318" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <View
         android:id="@+id/rectangle"
         android:layout_width="400dp"
-        android:layout_height="620dp"
+        android:layout_height="650dp"
         android:background="@drawable/rectangle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.454"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
@@ -43,15 +43,14 @@
         android:id="@+id/resnetConfidence"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="104dp"
+        android:layout_marginStart="80dp"
         android:text="Confidence Level"
         android:textColor="#8E8E8E"
-        android:textSize="10sp"
-        android:textStyle="bold"
+        android:textSize="13sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/vggConfidence"
         app:layout_constraintTop_toBottomOf="@+id/resnetResult"
-        app:layout_constraintVertical_bias="0.32" />
+        app:layout_constraintVertical_bias="0.322" />
 
     <TextView
         android:id="@+id/vggConfidence"
@@ -60,8 +59,7 @@
         android:layout_marginStart="70dp"
         android:text="Confidence Level"
         android:textColor="#8E8E8E"
-        android:textSize="10sp"
-        android:textStyle="bold"
+        android:textSize="13sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/view"
         app:layout_constraintHorizontal_bias="0.0"
@@ -71,8 +69,8 @@
 
     <ImageView
         android:id="@+id/image_placeholder"
-        android:layout_width="244dp"
-        android:layout_height="244dp"
+        android:layout_width="254dp"
+        android:layout_height="260dp"
         android:background="@drawable/image_placeholder"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -89,10 +87,10 @@
         android:layout_height="90dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/ellipse"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -118,7 +116,7 @@
         android:id="@+id/scan_button"
         android:layout_width="225dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="164dp"
+        android:layout_marginBottom="180dp"
         android:backgroundTint="#4C8C2E"
         android:fontFamily="@font/alata"
         android:text="PREDICT"
@@ -129,6 +127,7 @@
         app:cornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
@@ -147,7 +146,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
-        android:layout_marginTop="31dp"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="5dp"
         android:text="VGG19"
         android:textColor="#337836"
@@ -155,7 +154,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/vggResult"
         app:layout_constraintEnd_toStartOf="@+id/view"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.018"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scan_button"
         app:layout_constraintVertical_bias="0.0" />
@@ -165,7 +164,7 @@
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="72dp"
-        android:layout_marginBottom="72dp"
+        android:layout_marginBottom="108dp"
         android:background="@drawable/resultbg"
         android:text="Result"
         android:textAlignment="center"
@@ -181,7 +180,7 @@
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="40dp"
-        android:layout_marginBottom="72dp"
+        android:layout_marginBottom="108dp"
         android:background="@drawable/resultbg"
         android:text="Result"
         android:textAlignment="center"
@@ -194,7 +193,7 @@
     <View
         android:id="@+id/view"
         android:layout_width="2dp"
-        android:layout_height="80dp"
+        android:layout_height="120dp"
         android:layout_marginTop="24dp"
         android:background="#d6d6d6"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -209,7 +208,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="42dp"
-        android:layout_marginTop="31dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="80dp"
         android:text="ResNet50"
         android:textColor="#337836"
