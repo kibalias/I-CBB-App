@@ -28,7 +28,6 @@ import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
 import com.example.bacterial_blight.ml.GoodResnet;
-import com.example.bacterial_blight.ml.Model;
 import com.example.bacterial_blight.ml.Vgg1948c41h;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 

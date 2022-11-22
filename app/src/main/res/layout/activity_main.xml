@@ -43,14 +43,14 @@
         android:id="@+id/resnetConfidence"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
+        android:layout_marginStart="76dp"
         android:text="Confidence Level"
         android:textColor="#8E8E8E"
         android:textSize="13sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/vggConfidence"
         app:layout_constraintTop_toBottomOf="@+id/resnetResult"
-        app:layout_constraintVertical_bias="0.322" />
+        app:layout_constraintVertical_bias="0.433" />
 
     <TextView
         android:id="@+id/vggConfidence"
@@ -65,7 +65,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/vggResult"
-        app:layout_constraintVertical_bias="0.32" />
+        app:layout_constraintVertical_bias="0.433" />
 
     <ImageView
         android:id="@+id/image_placeholder"
@@ -220,5 +220,20 @@
         app:layout_constraintStart_toEndOf="@+id/view"
         app:layout_constraintTop_toBottomOf="@+id/scan_button"
         app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/confidencetxtView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#FFFBFB"
+        android:text="How sure am I?"
+        android:textColor="#393939"
+        android:textStyle="bold|italic"
+        app:layout_constraintBottom_toBottomOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.466"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view"
+        app:layout_constraintVertical_bias="0.574" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
