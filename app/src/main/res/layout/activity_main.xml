@@ -10,9 +10,11 @@
 
     <Button
         android:id="@+id/capture"
-        android:layout_width="225dp"
+        android:layout_width="160dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="3dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="4dp"
         android:backgroundTint="#CDDC39"
         android:fontFamily="@font/alata"
         android:text="CAPTURE IMAGE"
@@ -20,13 +22,10 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="#000000"
         android:textSize="16sp"
-        app:cornerRadius="10dp"
         app:layout_constraintBottom_toTopOf="@+id/scan_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/upload_button"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/image_placeholder"
+        app:layout_constraintVertical_bias="0.954" />
 
     <View
         android:id="@+id/rectangle"
@@ -43,7 +42,7 @@
         android:id="@+id/resnetConfidence"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="76dp"
+        android:layout_marginStart="84dp"
         android:text="Confidence Level"
         android:textColor="#8E8E8E"
         android:textSize="13sp"
@@ -70,7 +69,7 @@
     <ImageView
         android:id="@+id/image_placeholder"
         android:layout_width="254dp"
-        android:layout_height="260dp"
+        android:layout_height="300dp"
         android:background="@drawable/image_placeholder"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -96,21 +95,22 @@
 
     <Button
         android:id="@+id/upload_button"
-        android:layout_width="225dp"
+        android:layout_width="160dp"
         android:layout_height="48dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="20dp"
         android:backgroundTint="#A3EC81"
         android:fontFamily="@font/alata"
-        android:text="SELECT FROM GALLERY"
+        android:text="SELECT IMAGE"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="#000000"
         android:textSize="16sp"
-        app:cornerRadius="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/capture"
+        app:layout_constraintHorizontal_bias="0.21"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image_placeholder"
-        app:layout_constraintVertical_bias="0.029" />
+        app:layout_constraintTop_toBottomOf="@+id/image_placeholder" />
 
     <Button
         android:id="@+id/scan_button"
