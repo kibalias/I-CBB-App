@@ -30,16 +30,16 @@ public class Result_Activity extends AppCompatActivity {
         Characteristics = (TextView)findViewById(R.id.Characteristics);
         Diagnosis1 = (TextView)findViewById(R.id.Diagnosis1);
 
-        Intent getVggResult = getIntent();
-        String VggResult = getVggResult.getStringExtra("VGGResult");
-        if(VggResult.equals("CBB Infected")){
+        Intent getResult = getIntent();
+        String Result = getResult.getStringExtra("PredictResult");
+        if(Result.equals("CBB Infected")){
             InformationHolder.setText("Bacterial Blight Infected");
             imageInformation.setImageDrawable(getResources().getDrawable(R.drawable.information));
 
             ConfirmResult.setText("Confirm Symptoms");
             Characteristics.setText("Symptoms");
             Diagnosis1.setText(getResources().getString(R.string.CBBdiagnosis1));
-        }else if(VggResult.equals("Healthy")){
+        }else if(Result.equals("Healthy")){
             InformationHolder.setText("Healthy Cassava Leaf");
             imageInformation.setImageDrawable(getResources().getDrawable(R.drawable.information__1_));
 
@@ -53,9 +53,9 @@ public class Result_Activity extends AppCompatActivity {
             Diagnosis1.setText("Error Fetching Diagnosis");
         }
 
-        byte[] byteArray = getIntent().getByteArrayExtra("VGGImgResult");
-        Bitmap VGGImgResult = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-        result_fetched_image.setImageBitmap(VGGImgResult);
+        byte[] byteArray = getIntent().getByteArrayExtra("ImgResult");
+        Bitmap ImgResult = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+        result_fetched_image.setImageBitmap(ImgResult);
 
 
 

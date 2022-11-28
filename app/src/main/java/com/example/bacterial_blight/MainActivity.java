@@ -128,8 +128,8 @@ public class MainActivity extends AppCompatActivity {
                 byte[] byteArray = stream.toByteArray();
 
                 Intent vggResIntent = new Intent(this,Result_Activity.class);
-                vggResIntent.putExtra("VGGResult", getResult);
-                vggResIntent.putExtra("VGGImgResult", byteArray);
+                vggResIntent.putExtra("PredictResult", getResult);
+                vggResIntent.putExtra("ImgResult", byteArray);
 
                 loadingVGGDialog.startLoadingDialog();
                 Handler handler = new Handler();
@@ -143,6 +143,33 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //put ResnetResult to Result Page
+        LoadingDialog loadingResnetDialog = new LoadingDialog(MainActivity.this);
+        resnetResult.setOnClickListener(v -> {
+            try {
+                // get the prediction result
+                String getResult =  resnetResult.getText().toString();
+
+                // make bitmap image into byte array
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                image.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] byteArray = stream.toByteArray();
+
+                Intent resnetResIntent = new Intent(this,Result_Activity.class);
+                resnetResIntent.putExtra("PredictResult", getResult);
+                resnetResIntent.putExtra("ImgResult", byteArray);
+
+                loadingResnetDialog.startLoadingDialog();
+                Handler handler = new Handler();
+                handler.postDelayed(() -> {
+                    loadingResnetDialog.dismissDialog();
+                    startActivity(resnetResIntent);
+                },3000);
+            }catch (Exception e){
+                Toast.makeText(MainActivity.this, "Cannot view result. No image has been captured or selected.", Toast.LENGTH_LONG).show();
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override
@@ -223,7 +250,13 @@ public class MainActivity extends AppCompatActivity {
 
             String[] classes = {"CBB", "Healthy"};
             //Display the class of the prediction
-            resnetResult.setText(classes[maxPos]);
+            String outputPrediction = classes[maxPos];
+
+            if(outputPrediction.equals("CBB")){
+                resnetResult.setText("CBB Infected");
+            } else {
+                resnetResult.setText(classes[maxPos]);
+            }
 
             //Get the confidence level
             String outputCon = "";

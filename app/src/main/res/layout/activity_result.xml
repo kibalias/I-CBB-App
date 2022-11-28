@@ -83,9 +83,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="70dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="70dp"
-            android:layout_marginBottom="40dp"
+            android:layout_marginBottom="20dp"
             android:scaleType="fitXY"
             app:srcCompat="@drawable/image_placeholder" />
     </FrameLayout>
