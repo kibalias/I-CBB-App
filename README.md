@@ -1,8 +1,15 @@
-Note:
+# I-CBB
 
-Due to relatively large size of newly added model, please download the initial models: <br/><br/>
-    -       **VGG19 model** (vgg19-73C71H.tflite) in https://drive.google.com/file/d/1-0gEe66XQDR104brWZFioyx-DksUanX3/view?usp=share_link <br/><br/>
-    -       **ResNet50** (cbb-71-9,healthy-74-6.tflite) in https://drive.google.com/file/d/1-FU7MVfluSjjRIm-Jl-zD8BTT7eSymuq/view?usp=share_link
+Prototype application for detection of Cassava Bacterial Blight using Android Studio
 
-And import it as a Tensorflow lite model in Android Studio.
+## Processes/Modules
+1. Landing Page
+2. Main page for selection and classfication results
+2. Segmentation using OpenCV (Chaquopy)
+3. Classification using CNN Models (Tensorflow Lite) <br/>
+   4.1 VGG19 <br/>
+   4.2 ResNet50
+
+## Dependencies
+1. Chaquopy
 
