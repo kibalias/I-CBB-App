@@ -10,22 +10,21 @@
 
     <Button
         android:id="@+id/capture"
-        android:layout_width="160dp"
+        android:layout_width="130dp"
         android:layout_height="48dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="60dp"
         android:backgroundTint="#CDDC39"
         android:fontFamily="@font/alata"
         android:text="CAPTURE IMAGE"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="#000000"
-        android:textSize="16sp"
+        android:textSize="13sp"
         app:layout_constraintBottom_toTopOf="@+id/scan_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/image_placeholder"
-        app:layout_constraintVertical_bias="0.954" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <View
         android:id="@+id/rectangle"
@@ -95,28 +94,28 @@
 
     <Button
         android:id="@+id/upload_button"
-        android:layout_width="160dp"
+        android:layout_width="130dp"
         android:layout_height="48dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="5dp"
         android:backgroundTint="#A3EC81"
         android:fontFamily="@font/alata"
         android:text="SELECT IMAGE"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="#000000"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@+id/capture"
-        app:layout_constraintHorizontal_bias="0.21"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/image_placeholder" />
 
     <Button
         android:id="@+id/scan_button"
-        android:layout_width="225dp"
+        android:layout_width="270dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="180dp"
+        android:layout_marginBottom="185dp"
         android:backgroundTint="#4C8C2E"
         android:fontFamily="@font/alata"
         android:text="PREDICT"
