@@ -27,9 +27,8 @@ import android.widget.Toast;
 import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
-import com.example.bacterial_blight.ml.Model;
-import com.example.bacterial_blight.ml.Vgg19;
-import com.example.bacterial_blight.ml.Vgg1948c41h;
+import com.example.bacterial_blight.ml.Cbb719healthy746;
+import com.example.bacterial_blight.ml.Vgg1973c71h;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import org.checkerframework.common.subtyping.qual.Bottom;
@@ -103,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Cannot perform prediction. No image has been captured or selected.", Toast.LENGTH_LONG).show();
                 } else {
                     //Resizes the image for classification
-                    image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false);
+                    image = Bitmap.createScaledBitmap(segmentedImage, imageSize, imageSize, false);
                         //Pass the image to the models to make a prediction
                         vgg19(image);
                         resNet(image);
@@ -123,9 +122,9 @@ public class MainActivity extends AppCompatActivity {
                 image = (Bitmap) data.getExtras().get("data");
                 int dimension = Math.min(image.getWidth(), image.getHeight());
                 image = ThumbnailUtils.extractThumbnail(image, dimension, dimension);
+                placeholder.setImageBitmap(image);
 
                 image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false);
-                placeholder.setImageBitmap(image);
                 segmentation(image);
             }
             else {
@@ -133,12 +132,12 @@ public class MainActivity extends AppCompatActivity {
 
                 try{
                     image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+                    placeholder.setImageBitmap(image);
                 } catch (IOException e){
                     Toast.makeText(MainActivity.this, "An error has occurred.", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
                 }
                 image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false);
-                placeholder.setImageBitmap(image);
                 segmentation(image);
             }
         }
@@ -150,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
          * and scans through the input message for prediction
          */
         try {
-            Model model = Model.newInstance(getApplicationContext());
+            Cbb719healthy746 model = Cbb719healthy746.newInstance(getApplicationContext());
 
             // Creates inputs for reference.
             TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 224, 224, 3}, DataType.FLOAT32);
@@ -174,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
             inputFeature0.loadBuffer(byteBuffer);
 
             // Runs model inference and gets result.
-            Model.Outputs outputs = model.process(inputFeature0);
+            Cbb719healthy746.Outputs outputs = model.process(inputFeature0);
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
             float[] confidences = outputFeature0.getFloatArray();
@@ -214,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
          * and scans through the input image for prediction
          */
         try {
-            Vgg1948c41h model = Vgg1948c41h.newInstance(getApplicationContext());
+            Vgg1973c71h model = Vgg1973c71h.newInstance(getApplicationContext());
 
             // Creates inputs for reference.
             TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 224, 224, 3}, DataType.FLOAT32);
@@ -229,16 +228,16 @@ public class MainActivity extends AppCompatActivity {
             for(int i = 0; i < imageSize; i++){
                 for(int j = 0; j < imageSize; j++){
                     int val = intValues[pixel++]; //RGB
-                    byteBuffer.putFloat(((val >> 16) & 0xFF) * (1.f/1));
-                    byteBuffer.putFloat(((val >> 8) & 0xFF) * (1.f/1));
-                    byteBuffer.putFloat((val & 0xFF) * (1.f/1));
+                    byteBuffer.putFloat(((val >> 16) & 0xFF) * (1.f/1.f));
+                    byteBuffer.putFloat(((val >> 8) & 0xFF) * (1.f/1.f));
+                    byteBuffer.putFloat((val & 0xFF) * (1.f/1.f));
                 }
             }
 
             inputFeature0.loadBuffer(byteBuffer);
 
             // Runs model inference and gets result.
-            Vgg1948c41h.Outputs outputs = model.process(inputFeature0);
+            Vgg1973c71h.Outputs outputs = model.process(inputFeature0);
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
             float[] confidences = outputFeature0.getFloatArray();

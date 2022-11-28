@@ -13,4 +13,3 @@ Prototype application for detection of Cassava Bacterial Blight using Android St
 ## Dependencies
 1. Chaquopy
 
-
