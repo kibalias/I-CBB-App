@@ -4,4 +4,13 @@
     <string name="link">Para sa ibang impormasyon:
         <a href="https://plantix.net/en/library/plant-diseases/300039/cassava-bacterial-blight">https://plantix.net/en/library/plant-diseases/300039/cassava-bacterial-blight</a> </string>
     <string name="loading">Loading...</string>
+    <string name="CBBdiagnosis1">•  Leaf spots that have an angular shape and are usually surrounded by yellowing tissue. <br></br>
+
+•  Infected plant tissue or gum patches may enlarge, combine, and ooze out substance. <br></br>
+
+•  Gum is initially golden, later forming amber-colored stains.
+    </string>
+    <string name="Healthydiagnosis1">•  Dark green colored plant.
+•  Firm leaves.
+    </string>
 </resources>

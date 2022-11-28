@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class Home_Activity extends AppCompatActivity {
 
@@ -19,11 +20,12 @@ public class Home_Activity extends AppCompatActivity {
         LoadingDialog loadingDialog = new LoadingDialog(Home_Activity.this);
         redirectToDetectionPage.setOnClickListener(v -> {
             loadingDialog.startLoadingDialog();
+
             Handler handler = new Handler();
             handler.postDelayed(() -> {
                 loadingDialog.dismissDialog();
                 changeActivity();
-            },3000);
+            },1000);
         });
     }
     private void changeActivity(){

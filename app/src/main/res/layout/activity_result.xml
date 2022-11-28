@@ -26,32 +26,37 @@
 
         <ImageView
             android:id="@+id/imageInformation"
-            android:layout_width="86dp"
+            android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:background="@drawable/ellipse"
+            android:layout_margin="15dp"
+            android:background="@drawable/pop_sheet"
             android:contentDescription="GetImageInformationWarning" />
 
         <TextView
             android:id="@+id/InformationHolder"
-            android:layout_width="match_parent"
+            android:layout_width="240dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="86dp"
+            android:layout_marginLeft="80dp"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="25dp"
+            android:fontFamily="@font/alata"
+            android:paddingRight="10dp"
+            android:singleLine="false"
             android:text="Information"
-            android:textAlignment="center"
+            android:textAlignment="textStart"
             android:textSize="20sp"
-            android:typeface="serif" />
+            android:textStyle="bold"
+            android:typeface="normal"
+            app:autoSizeTextType="uniform" />
 
         <TextView
             android:id="@+id/diagnosisContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="86dp"
+            android:layout_marginLeft="80dp"
             android:layout_marginTop="55dp"
             android:layout_marginBottom="5dp"
             android:contentDescription="diagnosiscontainer"
-            android:text="Sample"
             android:textAlignment="center"
             android:typeface="serif" />
     </FrameLayout>
@@ -61,7 +66,7 @@
         android:layout_width="0dp"
         android:layout_height="250dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -89,7 +94,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -102,5 +107,43 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/result_confirmation_container" />
+
+        <TextView
+            android:id="@+id/ConfirmResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:fontFamily="@font/alata"
+            android:text="Confirm"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/Characteristics"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="5dp"
+            android:fontFamily="@font/alata"
+            android:text="Characteristics"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/Diagnosis1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="65dp"
+            android:layout_marginRight="5dp"
+            android:fontFamily="@font/alata"
+            android:justificationMode="inter_word"
+            android:paddingLeft="5dp"
+            android:singleLine="false"
+            android:text="@string/CBBdiagnosis1"
+            app:autoSizeTextType="uniform" />
+
     </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

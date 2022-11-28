@@ -13,8 +13,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class Result_Activity extends AppCompatActivity {
     ImageView imageInformation, result_fetched_image;
-    TextView InformationHolder, diagnosisContainer;
+    TextView InformationHolder, diagnosisContainer,
+            ConfirmResult, Characteristics, Diagnosis1;
     int imageSize =  224;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,18 +25,38 @@ public class Result_Activity extends AppCompatActivity {
         // instanciate here
         InformationHolder = (TextView)findViewById(R.id.InformationHolder);
         result_fetched_image = (ImageView)findViewById(R.id.result_fetched_image);
+        imageInformation = (ImageView)findViewById(R.id.imageInformation);
+        ConfirmResult = (TextView)findViewById(R.id.ConfirmResult);
+        Characteristics = (TextView)findViewById(R.id.Characteristics);
+        Diagnosis1 = (TextView)findViewById(R.id.Diagnosis1);
 
-        //Intent getVggResult = getIntent();
-        //String VggResult = getVggResult.getStringExtra("VGGResult");
-        InformationHolder.setText("Bacterial Blight Infected");
+        Intent getVggResult = getIntent();
+        String VggResult = getVggResult.getStringExtra("VGGResult");
+        if(VggResult.equals("CBB Infected")){
+            InformationHolder.setText("Bacterial Blight Infected");
+            imageInformation.setImageDrawable(getResources().getDrawable(R.drawable.information));
+
+            ConfirmResult.setText("Confirm Symptoms");
+            Characteristics.setText("Symptoms");
+            Diagnosis1.setText(getResources().getString(R.string.CBBdiagnosis1));
+        }else if(VggResult.equals("Healthy")){
+            InformationHolder.setText("Healthy Cassava Leaf");
+            imageInformation.setImageDrawable(getResources().getDrawable(R.drawable.information__1_));
+
+            ConfirmResult.setText("Confirm Diagnosis");
+            Characteristics.setText("Characteristics");
+            Diagnosis1.setText(getResources().getString(R.string.Healthydiagnosis1));
+        }else{
+            InformationHolder.setText("Information Error");
+            ConfirmResult.setText("Confirm Error");
+            Characteristics.setText("Characteristics");
+            Diagnosis1.setText("Error Fetching Diagnosis");
+        }
 
         byte[] byteArray = getIntent().getByteArrayExtra("VGGImgResult");
         Bitmap VGGImgResult = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
         result_fetched_image.setImageBitmap(VGGImgResult);
-        //Bundle bundle = getIntent().getExtras();
-        //if(bundle != null){
-        //    result_fetched_image.setImageBitmap(VGGImgResult);
-        //}
+
 
 
     }

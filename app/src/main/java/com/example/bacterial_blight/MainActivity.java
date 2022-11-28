@@ -103,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
                 //Checks if an image has been selected. If no message, return a toast message.
                 if(segmentedImage == null){
                     Toast.makeText(MainActivity.this, "Cannot perform prediction. No image has been captured or selected.", Toast.LENGTH_LONG).show();
+                    loadingPredictDialog.dismissDialog();
                 } else {
                     //Resizes the image for classification
                     image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false);
@@ -115,26 +116,33 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //put vggResult to Result Page
-        vggResult = findViewById(R.id.vggResult);
         LoadingDialog loadingVGGDialog = new LoadingDialog(MainActivity.this);
         vggResult.setOnClickListener(v -> {
-            //String getResult =  vggResult.getText().toString();
+            try {
+                // get the prediction result
+                String getResult =  vggResult.getText().toString();
 
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            image.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            byte[] byteArray = stream.toByteArray();
+                // make bitmap image into byte array
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                image.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] byteArray = stream.toByteArray();
 
-            Intent vggResIntent = new Intent(this,Result_Activity.class);
-            //vggResIntent.putExtra("VGGResult", getResult);
-            vggResIntent.putExtra("VGGImgResult", byteArray);
+                Intent vggResIntent = new Intent(this,Result_Activity.class);
+                vggResIntent.putExtra("VGGResult", getResult);
+                vggResIntent.putExtra("VGGImgResult", byteArray);
 
-            loadingVGGDialog.startLoadingDialog();
-            Handler handler = new Handler();
-            handler.postDelayed(() -> {
-                loadingVGGDialog.dismissDialog();
-                startActivity(vggResIntent);
-            },3000);
+                loadingVGGDialog.startLoadingDialog();
+                Handler handler = new Handler();
+                handler.postDelayed(() -> {
+                    loadingVGGDialog.dismissDialog();
+                    startActivity(vggResIntent);
+                },3000);
+            }catch (Exception e){
+                Toast.makeText(MainActivity.this, "Cannot view result. No image has been captured or selected.", Toast.LENGTH_LONG).show();
+                e.printStackTrace();
+            }
         });
+
     }
 
     @Override
@@ -254,9 +262,9 @@ public class MainActivity extends AppCompatActivity {
             for(int i = 0; i < imageSize; i++){
                 for(int j = 0; j < imageSize; j++){
                     int val = intValues[pixel++]; //RGB
-                    byteBuffer.putFloat(((val >> 16) & 0xFF) * (1.f/1.f));
-                    byteBuffer.putFloat(((val >> 8) & 0xFF) * (1.f/1.f));
-                    byteBuffer.putFloat((val & 0xFF) * (1.f/1.f));
+                    byteBuffer.putFloat(((val >> 16) & 0xFF) * (1.f/255.f));
+                    byteBuffer.putFloat(((val >> 8) & 0xFF) * (1.f/255.f));
+                    byteBuffer.putFloat((val & 0xFF) * (1.f/255.f));
                 }
             }
 
@@ -279,7 +287,13 @@ public class MainActivity extends AppCompatActivity {
 
             String[] classes = {"CBB", "Healthy"};
             //Display the class of the prediction
-            vggResult.setText(classes[maxPos]);
+            String outputPrediction = classes[maxPos];
+
+            if(outputPrediction.equals("CBB")){
+                vggResult.setText("CBB Infected");
+            } else {
+                vggResult.setText(classes[maxPos]);
+            }
 
             //Get the confidence level
             String outputCon = "";
