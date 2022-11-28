@@ -107,10 +107,11 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     //Resizes the image for classification
 
-                    image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false);
+                    segmentedImage = Bitmap.createScaledBitmap(segmentedImage, imageSize, imageSize, false);
+
                     //Pass the image to the models to make a prediction
-                    vgg19(image);
-                    resNet(image);
+                    vgg19(segmentedImage);
+                    resNet(segmentedImage);
                     loadingPredictDialog.dismissDialog();
 
                 }
