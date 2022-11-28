@@ -10,6 +10,15 @@
         <entry key="..\:/Users/JAN NICOLE CASILLAN/AndroidStudioProjects/bacterialblight/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Users/JAN NICOLE CASILLAN/AndroidStudioProjects/bacterialblight/app/src/main/res/layout/layout_pop_healthy_result.xml" value="0.209375" />
         <entry key="..\:/Users/JAN NICOLE CASILLAN/AndroidStudioProjects/bacterialblight/app/src/main/res/layout/layout_pop_result.xml" value="0.48601036269430054" />
+        <entry key="..\:/Users/JAN NICOLE CASILLAN/AndroidStudioProjects/i-cbb/app/src/main/res/drawable-v24/ellipse.xml" value="0.1" />
+        <entry key="..\:/Users/JAN NICOLE CASILLAN/AndroidStudioProjects/i-cbb/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
+        <entry key="..\:/Users/JAN NICOLE CASILLAN/AndroidStudioProjects/i-cbb/app/src/main/res/drawable-v24/rectangle.xml" value="0.1" />
+        <entry key="..\:/Users/JAN NICOLE CASILLAN/AndroidStudioProjects/i-cbb/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
+        <entry key="..\:/Users/JAN NICOLE CASILLAN/AndroidStudioProjects/i-cbb/app/src/main/res/drawable/pop_sheet.xml" value="0.1" />
+        <entry key="..\:/Users/JAN NICOLE CASILLAN/AndroidStudioProjects/i-cbb/app/src/main/res/layout/activity_home.xml" value="0.25" />
+        <entry key="..\:/Users/JAN NICOLE CASILLAN/AndroidStudioProjects/i-cbb/app/src/main/res/layout/activity_main.xml" value="0.209375" />
+        <entry key="..\:/Users/JAN NICOLE CASILLAN/AndroidStudioProjects/i-cbb/app/src/main/res/layout/layout_pop_healthy_result.xml" value="0.209375" />
+        <entry key="..\:/Users/JAN NICOLE CASILLAN/AndroidStudioProjects/i-cbb/app/src/main/res/layout/layout_pop_result.xml" value="0.25" />
       </map>
     </option>
   </component>
@@ -18,5 +27,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.14" />
+      </ProjectState>
+    </option>
   </component>
 </project>

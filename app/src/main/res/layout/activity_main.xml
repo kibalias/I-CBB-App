@@ -5,13 +5,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#8BC34A"
-    android:backgroundTint="#A2F979"
+    android:backgroundTint="#84C666"
     tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/capture"
+        android:layout_width="130dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="60dp"
+        android:backgroundTint="#CDDC39"
+        android:fontFamily="@font/alata"
+        android:text="CAPTURE IMAGE"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="#000000"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toTopOf="@+id/scan_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_placeholder"
+        app:layout_constraintVertical_bias="1.0" />
 
     <View
         android:id="@+id/rectangle"
-        android:layout_width="411dp"
-        android:layout_height="608dp"
+        android:layout_width="400dp"
+        android:layout_height="650dp"
         android:background="@drawable/rectangle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -19,18 +37,46 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 
+    <TextView
+        android:id="@+id/resnetConfidence"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="84dp"
+        android:text="Confidence Level"
+        android:textColor="#8E8E8E"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/vggConfidence"
+        app:layout_constraintTop_toBottomOf="@+id/resnetResult"
+        app:layout_constraintVertical_bias="0.433" />
+
+    <TextView
+        android:id="@+id/vggConfidence"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="70dp"
+        android:text="Confidence Level"
+        android:textColor="#8E8E8E"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/view"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/vggResult"
+        app:layout_constraintVertical_bias="0.433" />
+
     <ImageView
         android:id="@+id/image_placeholder"
-        android:layout_width="224dp"
-        android:layout_height="224dp"
+        android:layout_width="254dp"
+        android:layout_height="300dp"
         android:background="@drawable/image_placeholder"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.508"
+        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/rectangle"
-        app:layout_constraintVertical_bias="0.268"
+        app:layout_constraintTop_toBottomOf="@+id/ellipse"
+        app:layout_constraintVertical_bias="0.048"
         tools:ignore="MissingConstraints" />
 
     <View
@@ -39,99 +85,154 @@
         android:layout_height="90dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/ellipse"
-        app:layout_constraintBottom_toTopOf="@+id/image_placeholder"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.1" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/upload_button"
-        android:layout_width="225dp"
+        android:layout_width="130dp"
         android:layout_height="48dp"
-        android:backgroundTint="#B6FF94"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="5dp"
+        android:backgroundTint="#A3EC81"
         android:fontFamily="@font/alata"
-        android:text="Select Image"
+        android:text="SELECT IMAGE"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="#000000"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.505"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/capture"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image_placeholder"
-        app:layout_constraintVertical_bias="0.163" />
+        app:layout_constraintTop_toBottomOf="@+id/image_placeholder" />
 
     <Button
         android:id="@+id/scan_button"
-        android:layout_width="225dp"
+        android:layout_width="270dp"
         android:layout_height="48dp"
-        android:backgroundTint="#A2F979"
+        android:layout_marginBottom="185dp"
+        android:backgroundTint="#4C8C2E"
         android:fontFamily="@font/alata"
-        android:text="Scan"
+        android:text="PREDICT"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="#000000"
+        android:textColor="#F8F8F8"
         android:textSize="16sp"
+        app:cornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.505"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/upload_button"
-        app:layout_constraintVertical_bias="0.072" />
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="54dp"
+        android:layout_height="53dp"
         app:layout_constraintBottom_toBottomOf="@+id/ellipse"
         app:layout_constraintEnd_toEndOf="@+id/ellipse"
         app:layout_constraintStart_toStartOf="@+id/ellipse"
         app:layout_constraintTop_toTopOf="@+id/ellipse"
-        app:srcCompat="@drawable/picture" />
-
-    <RadioGroup
-        android:id="@+id/radioGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scan_button">
-
-
-        <RadioButton
-            android:id="@+id/vggRadioBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:checked="true"
-            android:padding="10dp"
-            android:text="VGG-19" />
-
-        <RadioButton
-            android:id="@+id/resNetRadioBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:padding="10dp"
-            android:text="ResNet-50" />
-    </RadioGroup>
+        app:layout_constraintVertical_bias="0.54"
+        app:srcCompat="@drawable/icon_top" />
 
     <TextView
-        android:id="@+id/result"
+        android:id="@+id/vggText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
         android:layout_marginTop="20dp"
-        android:text="Result"
-        app:layout_constraintBottom_toTopOf="@+id/image_placeholder"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="5dp"
+        android:text="VGG19"
+        android:textColor="#337836"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/vggResult"
+        app:layout_constraintEnd_toStartOf="@+id/view"
+        app:layout_constraintHorizontal_bias="0.018"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ellipse" />
+        app:layout_constraintTop_toBottomOf="@+id/scan_button"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/vggResult"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="72dp"
+        android:layout_marginBottom="108dp"
+        android:background="@drawable/resultbg"
+        android:text="Result"
+        android:textAlignment="center"
+        android:textColor="#4A4A4A"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/resnetResult"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/resnetResult"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="108dp"
+        android:background="@drawable/resultbg"
+        android:text="Result"
+        android:textAlignment="center"
+        android:textColor="#4A4A4A"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/view" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="2dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="24dp"
+        android:background="#d6d6d6"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/resnetResult"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/vggResult"
+        app:layout_constraintTop_toBottomOf="@+id/scan_button"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/resnetText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="42dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="80dp"
+        android:text="ResNet50"
+        android:textColor="#337836"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/resnetResult"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/view"
+        app:layout_constraintTop_toBottomOf="@+id/scan_button"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/confidencetxtView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#FFFBFB"
+        android:text="How sure am I?"
+        android:textColor="#393939"
+        android:textStyle="bold|italic"
+        app:layout_constraintBottom_toBottomOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.466"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view"
+        app:layout_constraintVertical_bias="0.574" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
