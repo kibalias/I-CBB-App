@@ -37,28 +37,18 @@
             android:layout_width="240dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="80dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="25dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="15dp"
             android:fontFamily="@font/alata"
             android:paddingRight="10dp"
             android:singleLine="false"
             android:text="Information"
             android:textAlignment="textStart"
+            android:textColor="#555555"
             android:textSize="20sp"
-            android:textStyle="bold"
             android:typeface="normal"
             app:autoSizeTextType="uniform" />
 
-        <TextView
-            android:id="@+id/diagnosisContainer"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="80dp"
-            android:layout_marginTop="55dp"
-            android:layout_marginBottom="5dp"
-            android:contentDescription="diagnosiscontainer"
-            android:textAlignment="center"
-            android:typeface="serif" />
     </FrameLayout>
 
     <FrameLayout
@@ -116,33 +106,44 @@
             android:layout_marginTop="5dp"
             android:layout_marginRight="5dp"
             android:fontFamily="@font/alata"
+            android:paddingStart="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
             android:text="Confirm"
-            android:textSize="24sp"
+            android:textColor="#555555"
+            android:textSize="25sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/Characteristics"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="5dp"
             android:layout_marginTop="40dp"
             android:layout_marginRight="5dp"
             android:fontFamily="@font/alata"
+            android:paddingStart="20dp"
+            android:paddingTop="10dp"
             android:text="Characteristics"
-            android:textSize="16sp" />
+            android:textColor="#555555"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/Diagnosis1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="5dp"
             android:layout_marginTop="65dp"
             android:layout_marginRight="5dp"
             android:fontFamily="@font/alata"
             android:justificationMode="inter_word"
-            android:paddingLeft="5dp"
+            android:paddingLeft="40dp"
+            android:paddingTop="20dp"
+            android:paddingRight="30dp"
             android:singleLine="false"
             android:text="@string/CBBdiagnosis1"
+            android:textColor="#555555"
+            android:textSize="16sp"
             app:autoSizeTextType="uniform" />
 
     </FrameLayout>

@@ -16,7 +16,7 @@
         android:background="@drawable/rectangle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
@@ -28,7 +28,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/ellipse"
         app:layout_constraintBottom_toTopOf="@+id/image_placeholder"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,13 +38,13 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="38dp"
-        android:layout_height="41dp"
+        android:layout_width="43dp"
+        android:layout_height="46dp"
         app:layout_constraintBottom_toBottomOf="@+id/ellipse"
         app:layout_constraintEnd_toEndOf="@+id/ellipse"
+        app:layout_constraintHorizontal_bias="0.517"
         app:layout_constraintStart_toStartOf="@+id/ellipse"
         app:layout_constraintTop_toTopOf="@+id/ellipse"
-        app:layout_constraintVertical_bias="0.54"
         app:srcCompat="@drawable/icon_top" />
 
     <ImageView
@@ -52,7 +52,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="55dp"
+        android:layout_marginTop="65dp"
         android:layout_marginEnd="40dp"
         android:layout_marginBottom="280dp"
         android:background="@drawable/image_placeholder"
@@ -76,7 +76,7 @@
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="#000000"
-        android:textSize="12sp"
+        android:textSize="15sp"
         app:layout_constraintBottom_toTopOf="@+id/scan_button"
         app:layout_constraintEnd_toStartOf="@+id/view"
         app:layout_constraintStart_toStartOf="@+id/rectangle"
@@ -95,7 +95,7 @@
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="#000000"
-        android:textSize="12sp"
+        android:textSize="15sp"
         app:layout_constraintBottom_toTopOf="@+id/scan_button"
         app:layout_constraintEnd_toEndOf="@+id/rectangle"
         app:layout_constraintStart_toEndOf="@+id/view"
@@ -123,27 +123,31 @@
     <View
         android:id="@+id/view"
         android:layout_width="2dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="140dp"
+        android:layout_marginTop="10dp"
         android:background="#d6d6d6"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/rectangle"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="@+id/rectangle"
-        app:layout_constraintTop_toBottomOf="@+id/scan_button" />
+        app:layout_constraintTop_toBottomOf="@+id/scan_button"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/confidencetxtView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:background="#FFFBFB"
         android:text="How sure am I?"
         android:textColor="#393939"
         android:textStyle="bold|italic"
         app:layout_constraintBottom_toBottomOf="@+id/view"
         app:layout_constraintEnd_toEndOf="@+id/rectangle"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="@+id/rectangle"
         app:layout_constraintTop_toTopOf="@+id/view"
-        app:layout_constraintVertical_bias="0.415" />
+        app:layout_constraintVertical_bias="0.57" />
 
     <TextView
         android:id="@+id/vggText"
