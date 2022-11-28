@@ -12,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.method.LinkMovementMethod;
 import android.util.Base64;
@@ -94,20 +95,45 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //Scan Button
-        scan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        LoadingDialog loadingPredictDialog = new LoadingDialog(MainActivity.this);
+        scan.setOnClickListener(v -> {
+            loadingPredictDialog.startLoadingDialog();
+            Handler handler = new Handler();
+            handler.postDelayed(() -> {
                 //Checks if an image has been selected. If no message, return a toast message.
                 if(segmentedImage == null){
                     Toast.makeText(MainActivity.this, "Cannot perform prediction. No image has been captured or selected.", Toast.LENGTH_LONG).show();
                 } else {
                     //Resizes the image for classification
                     image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false);
-                        //Pass the image to the models to make a prediction
-                        vgg19(image);
-                        resNet(image);
+                    //Pass the image to the models to make a prediction
+                    vgg19(image);
+                    resNet(image);
+                    loadingPredictDialog.dismissDialog();
                 }
-            }
+            },1000);
+        });
+
+        //put vggResult to Result Page
+        vggResult = findViewById(R.id.vggResult);
+        LoadingDialog loadingVGGDialog = new LoadingDialog(MainActivity.this);
+        vggResult.setOnClickListener(v -> {
+            //String getResult =  vggResult.getText().toString();
+
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            image.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] byteArray = stream.toByteArray();
+
+            Intent vggResIntent = new Intent(this,Result_Activity.class);
+            //vggResIntent.putExtra("VGGResult", getResult);
+            vggResIntent.putExtra("VGGImgResult", byteArray);
+
+            loadingVGGDialog.startLoadingDialog();
+            Handler handler = new Handler();
+            handler.postDelayed(() -> {
+                loadingVGGDialog.dismissDialog();
+                startActivity(vggResIntent);
+            },3000);
         });
     }
 
