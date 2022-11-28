@@ -8,6 +8,7 @@
     android:backgroundTint="#84C666"
     tools:context=".MainActivity">
 
+
     <View
         android:id="@+id/rectangle"
         android:layout_width="0dp"
@@ -99,6 +100,7 @@
         app:layout_constraintBottom_toTopOf="@+id/scan_button"
         app:layout_constraintEnd_toEndOf="@+id/rectangle"
         app:layout_constraintStart_toEndOf="@+id/view"
+
         app:layout_constraintTop_toBottomOf="@+id/image_placeholder" />
 
     <Button

@@ -28,8 +28,8 @@ import android.widget.Toast;
 import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
-import com.example.bacterial_blight.ml.GoodResnet;
-import com.example.bacterial_blight.ml.Vgg1948c41h;
+import com.example.bacterial_blight.ml.Cbb719healthy746;
+import com.example.bacterial_blight.ml.Vgg1973c71h;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import org.checkerframework.common.subtyping.qual.Bottom;
@@ -106,11 +106,13 @@ public class MainActivity extends AppCompatActivity {
                     loadingPredictDialog.dismissDialog();
                 } else {
                     //Resizes the image for classification
+
                     image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false);
                     //Pass the image to the models to make a prediction
                     vgg19(image);
                     resNet(image);
                     loadingPredictDialog.dismissDialog();
+
                 }
             },1000);
         });
@@ -210,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
          * and scans through the input message for prediction
          */
         try {
-            GoodResnet model = GoodResnet.newInstance(getApplicationContext());
+            Cbb719healthy746 model = Cbb719healthy746.newInstance(getApplicationContext());
 
             // Creates inputs for reference.
             TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 224, 224, 3}, DataType.FLOAT32);
@@ -234,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
             inputFeature0.loadBuffer(byteBuffer);
 
             // Runs model inference and gets result.
-            GoodResnet.Outputs outputs = model.process(inputFeature0);
+            Cbb719healthy746.Outputs outputs = model.process(inputFeature0);
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
             float[] confidences = outputFeature0.getFloatArray();
@@ -280,7 +282,7 @@ public class MainActivity extends AppCompatActivity {
          * and scans through the input image for prediction
          */
         try {
-            Vgg1948c41h model = Vgg1948c41h.newInstance(getApplicationContext());
+            Vgg1973c71h model = Vgg1973c71h.newInstance(getApplicationContext());
 
             // Creates inputs for reference.
             TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 224, 224, 3}, DataType.FLOAT32);
@@ -304,7 +306,7 @@ public class MainActivity extends AppCompatActivity {
             inputFeature0.loadBuffer(byteBuffer);
 
             // Runs model inference and gets result.
-            Vgg1948c41h.Outputs outputs = model.process(inputFeature0);
+            Vgg1973c71h.Outputs outputs = model.process(inputFeature0);
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
             float[] confidences = outputFeature0.getFloatArray();
