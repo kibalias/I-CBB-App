@@ -28,8 +28,8 @@ import android.widget.Toast;
 import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
-import com.example.bacterial_blight.ml.GoodResnet;
-import com.example.bacterial_blight.ml.Vgg1948c41h;
+import com.example.bacterial_blight.ml.Cbb719healthy746;
+import com.example.bacterial_blight.ml.Vgg1973c71h;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import org.checkerframework.common.subtyping.qual.Bottom;
@@ -103,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
                 //Checks if an image has been selected. If no message, return a toast message.
                 if(segmentedImage == null){
                     Toast.makeText(MainActivity.this, "Cannot perform prediction. No image has been captured or selected.", Toast.LENGTH_LONG).show();
+                    loadingPredictDialog.dismissDialog();
                 } else {
                     //Resizes the image for classification
                     image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false);
@@ -175,71 +176,7 @@ public class MainActivity extends AppCompatActivity {
          * and scans through the input message for prediction
          */
         try {
-            GoodResnet model = GoodResnet.newInstance(getApplicationContext());
-
-            // Creates inputs for reference.
-            TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 224, 224, 3}, DataType.FLOAT32);
-
-            ByteBuffer byteBuffer = ByteBuffer.allocateDirect(4 * imageSize * imageSize * 3);
-            byteBuffer.order(ByteOrder.nativeOrder());
-
-            int[] intValues = new int[imageSize * imageSize];
-            image.getPixels(intValues, 0, image.getWidth(), 0, 0, image.getWidth(), image.getHeight());
-            int pixel = 0;
-            //iterate over each pixels and extract RGB values. Values will be added individually to the byte buffer
-            for(int i = 0; i < imageSize; i++){
-                for(int j = 0; j < imageSize; j++){
-                    int val = intValues[pixel++]; //RGB
-                    byteBuffer.putFloat(((val >> 16) & 0xFF) * (1.f/1));
-                    byteBuffer.putFloat(((val >> 8) & 0xFF) * (1.f/1));
-                    byteBuffer.putFloat((val & 0xFF) * (1.f/1));
-                }
-            }
-
-            inputFeature0.loadBuffer(byteBuffer);
-
-            // Runs model inference and gets result.
-            GoodResnet.Outputs outputs = model.process(inputFeature0);
-            TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
-
-            float[] confidences = outputFeature0.getFloatArray();
-            //find the index of class with big confidence
-            int maxPos = 0;
-            float maxConfidence = 0;
-            for (int i = 0; i < confidences.length; i++){
-                if(confidences[i] > maxConfidence){
-                    maxConfidence = confidences[i];
-                    maxPos = i;
-                }
-            }
-
-            String[] classes = {"CBB", "Healthy"};
-            //Display the class of the prediction
-            resnetResult.setText(classes[maxPos]);
-
-            //Get the confidence level
-            String outputCon = "";
-            for(int i = 0; i < classes.length; i++){
-                outputCon += String.format("%s: %.1f%%\n", classes[i], confidences[i] * 100);
-            }
-            //set the confidence level to the text view
-            resnetConTxt.setText(outputCon);
-
-            // Releases model resources if no longer used.
-            model.close();
-        } catch (IOException e) {
-            // TODO Handle the exception
-            Toast.makeText(MainActivity.this, "An error has occurred.", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    public void vgg19(Bitmap image){
-        /*
-         * This method loads the VGG19 model
-         * and scans through the input image for prediction
-         */
-        try {
-            Vgg1948c41h model = Vgg1948c41h.newInstance(getApplicationContext());
+            Cbb719healthy746 model = Cbb719healthy746.newInstance(getApplicationContext());
 
             // Creates inputs for reference.
             TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 224, 224, 3}, DataType.FLOAT32);
@@ -263,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
             inputFeature0.loadBuffer(byteBuffer);
 
             // Runs model inference and gets result.
-            Vgg1948c41h.Outputs outputs = model.process(inputFeature0);
+            Cbb719healthy746.Outputs outputs = model.process(inputFeature0);
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
             float[] confidences = outputFeature0.getFloatArray();
@@ -279,7 +216,83 @@ public class MainActivity extends AppCompatActivity {
 
             String[] classes = {"CBB", "Healthy"};
             //Display the class of the prediction
-            vggResult.setText(classes[maxPos]);
+            String outputPrediction = classes[maxPos];
+
+            if(outputPrediction.equals("CBB")){
+                resnetResult.setText("CBB Infected");
+            } else {
+                resnetResult.setText(classes[maxPos]);
+            }
+
+            //Get the confidence level
+            String outputCon = "";
+            for(int i = 0; i < classes.length; i++){
+                outputCon += String.format("%s: %.1f%%\n", classes[i], confidences[i] * 100);
+            }
+            //set the confidence level to the text view
+            resnetConTxt.setText(outputCon);
+
+            // Releases model resources if no longer used.
+            model.close();
+        } catch (IOException e) {
+            // TODO Handle the exception
+            Toast.makeText(MainActivity.this, "An error has occurred.", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void vgg19(Bitmap image){
+        /*
+         * This method loads the VGG19 model
+         * and scans through the input image for prediction
+         */
+        try {
+            Vgg1973c71h model = Vgg1973c71h.newInstance(getApplicationContext());
+
+            // Creates inputs for reference.
+            TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 224, 224, 3}, DataType.FLOAT32);
+
+            ByteBuffer byteBuffer = ByteBuffer.allocateDirect(4 * imageSize * imageSize * 3);
+            byteBuffer.order(ByteOrder.nativeOrder());
+
+            int[] intValues = new int[imageSize * imageSize];
+            image.getPixels(intValues, 0, image.getWidth(), 0, 0, image.getWidth(), image.getHeight());
+            int pixel = 0;
+            //iterate over each pixels and extract RGB values. Values will be added individually to the byte buffer
+            for(int i = 0; i < imageSize; i++){
+                for(int j = 0; j < imageSize; j++){
+                    int val = intValues[pixel++]; //RGB
+                    byteBuffer.putFloat(((val >> 16) & 0xFF) * (1.f/255.f));
+                    byteBuffer.putFloat(((val >> 8) & 0xFF) * (1.f/255.f));
+                    byteBuffer.putFloat((val & 0xFF) * (1.f/255.f));
+                }
+            }
+
+            inputFeature0.loadBuffer(byteBuffer);
+
+            // Runs model inference and gets result.
+            Vgg1973c71h.Outputs outputs = model.process(inputFeature0);
+            TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
+
+            float[] confidences = outputFeature0.getFloatArray();
+            //find the index of class with big confidence
+            int maxPos = 0;
+            float maxConfidence = 0;
+            for (int i = 0; i < confidences.length; i++){
+                if(confidences[i] > maxConfidence){
+                    maxConfidence = confidences[i];
+                    maxPos = i;
+                }
+            }
+
+            String[] classes = {"CBB", "Healthy"};
+            //Display the class of the prediction
+            String outputPrediction = classes[maxPos];
+
+            if(outputPrediction.equals("CBB")){
+               vggResult.setText("CBB Infected");
+            } else {
+                vggResult.setText(classes[maxPos]);
+            }
 
             //Get the confidence level
             String outputCon = "";
