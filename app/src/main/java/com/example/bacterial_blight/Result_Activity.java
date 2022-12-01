@@ -36,7 +36,7 @@ public class Result_Activity extends AppCompatActivity {
             InformationHolder.setText("Bacterial Blight Infected");
             imageInformation.setImageDrawable(getResources().getDrawable(R.drawable.information));
 
-            ConfirmResult.setText("Confirm Symptoms");
+            ConfirmResult.setText("Confirm Indication");
             Characteristics.setText("Symptoms");
             Diagnosis1.setText(getResources().getString(R.string.CBBdiagnosis1));
         }else if(Result.equals("Healthy")){
