@@ -7,12 +7,15 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.text.method.LinkMovementMethod;
 import android.util.Base64;
 import android.view.LayoutInflater;
@@ -43,7 +46,7 @@ import java.nio.ByteOrder;
 public class MainActivity extends AppCompatActivity {
     Button gallery, camera, scan;
     ImageView placeholder, placeholder1;
-    TextView vggResult, resnetResult, vggConTxt, resnetConTxt;
+    TextView vggResult, resnetResult, imageNamePlaceholder;
     Bitmap image = null;
     Bitmap segmentedImage = null;
     String imageString = "";
@@ -59,9 +62,10 @@ public class MainActivity extends AppCompatActivity {
         scan = findViewById(R.id.scan_button);
         vggResult = findViewById(R.id.vggResult);
         resnetResult = findViewById(R.id.resnetResult);
-        resnetConTxt = findViewById(R.id.resnetConfidence);
-        vggConTxt = findViewById(R.id.vggConfidence);
+        //resnetConTxt = findViewById(R.id.resnetConfidence);
+        //vggConTxt = findViewById(R.id.vggConfidence);
         placeholder = findViewById(R.id.image_placeholder);
+        imageNamePlaceholder = findViewById(R.id.imageNamePlaceholder);
 
         //Select Image from Gallery
         gallery.setOnClickListener(new View.OnClickListener() {
@@ -69,8 +73,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 vggResult.setText("Result");
                 resnetResult.setText("Result");
-                vggConTxt.setText("Confidence Level");
-                resnetConTxt.setText("Confidence Level");
+                //vggConTxt.setText("Confidence Level");
+                //resnetConTxt.setText("Confidence Level");
                 Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, 3);
             }
@@ -82,8 +86,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 vggResult.setText("Result");
                 resnetResult.setText("Result");
-                vggConTxt.setText("Confidence Level");
-                resnetConTxt.setText("Confidence Level");
+                //vggConTxt.setText("Confidence Level");
+                //.setText("Confidence Level");
                 if(checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
                     Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(cameraIntent, 1);
@@ -94,20 +98,81 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //Scan Button
-        scan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        LoadingDialog loadingPredictDialog = new LoadingDialog(MainActivity.this);
+        scan.setOnClickListener(v -> {
+            loadingPredictDialog.startLoadingDialog();
+            Handler handler = new Handler();
+            handler.postDelayed(() -> {
                 //Checks if an image has been selected. If no message, return a toast message.
                 if(segmentedImage == null){
                     Toast.makeText(MainActivity.this, "Cannot perform prediction. No image has been captured or selected.", Toast.LENGTH_LONG).show();
+                    loadingPredictDialog.dismissDialog();
                 } else {
                     //Resizes the image for classification
 
-                    image = Bitmap.createScaledBitmap(segmentedImage, imageSize, imageSize, false);
-                        //Pass the image to the models to make a prediction
-                        vgg19(image);
-                        resNet(image);
+                    segmentedImage = Bitmap.createScaledBitmap(segmentedImage, imageSize, imageSize, false);
+
+                    //Pass the image to the models to make a prediction
+                    vgg19(segmentedImage);
+                    resNet(segmentedImage);
+                    loadingPredictDialog.dismissDialog();
                 }
+            },1000);
+        });
+
+        //put vggResult to Result Page
+        LoadingDialog loadingVGGDialog = new LoadingDialog(MainActivity.this);
+        vggResult.setOnClickListener(v -> {
+            try {
+                // get the prediction result
+                String getResult =  vggResult.getText().toString();
+
+                // make bitmap image into byte array
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                image.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] byteArray = stream.toByteArray();
+
+                Intent vggResIntent = new Intent(this,Result_Activity.class);
+                vggResIntent.putExtra("PredictResult", getResult);
+                vggResIntent.putExtra("ImgResult", byteArray);
+
+                loadingVGGDialog.startLoadingDialog();
+                Handler handler = new Handler();
+                handler.postDelayed(() -> {
+                    loadingVGGDialog.dismissDialog();
+                    startActivity(vggResIntent);
+                },3000);
+            }catch (Exception e){
+                Toast.makeText(MainActivity.this, "Cannot view result. No image has been captured or selected.", Toast.LENGTH_LONG).show();
+                e.printStackTrace();
+            }
+        });
+
+        //put ResnetResult to Result Page
+        LoadingDialog loadingResnetDialog = new LoadingDialog(MainActivity.this);
+        resnetResult.setOnClickListener(v -> {
+            try {
+                // get the prediction result
+                String getResult =  resnetResult.getText().toString();
+
+                // make bitmap image into byte array
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                image.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] byteArray = stream.toByteArray();
+
+                Intent resnetResIntent = new Intent(this,Result_Activity.class);
+                resnetResIntent.putExtra("PredictResult", getResult);
+                resnetResIntent.putExtra("ImgResult", byteArray);
+
+                loadingResnetDialog.startLoadingDialog();
+                Handler handler = new Handler();
+                handler.postDelayed(() -> {
+                    loadingResnetDialog.dismissDialog();
+                    startActivity(resnetResIntent);
+                },3000);
+            }catch (Exception e){
+                Toast.makeText(MainActivity.this, "Cannot view result. No image has been captured or selected.", Toast.LENGTH_LONG).show();
+                e.printStackTrace();
             }
         });
     }
@@ -130,6 +195,11 @@ public class MainActivity extends AppCompatActivity {
             }
             else {
                 Uri selectedImage = data.getData();
+                Cursor returnCursor =
+                        getContentResolver().query(selectedImage, null, null, null, null);
+                int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                returnCursor.moveToFirst();
+                imageNamePlaceholder.setText(returnCursor.getString(nameIndex));
 
                 try{
                     image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
@@ -190,7 +260,13 @@ public class MainActivity extends AppCompatActivity {
 
             String[] classes = {"CBB", "Healthy"};
             //Display the class of the prediction
-            resnetResult.setText(classes[maxPos]);
+            String outputPrediction = classes[maxPos];
+
+            if(outputPrediction.equals("CBB")){
+                resnetResult.setText("CBB Infected");
+            } else {
+                resnetResult.setText(classes[maxPos]);
+            }
 
             //Get the confidence level
             String outputCon = "";
@@ -198,7 +274,7 @@ public class MainActivity extends AppCompatActivity {
                 outputCon += String.format("%s: %.1f%%\n", classes[i], confidences[i] * 100);
             }
             //set the confidence level to the text view
-            resnetConTxt.setText(outputCon);
+            //resnetConTxt.setText(outputCon);
 
             // Releases model resources if no longer used.
             model.close();
@@ -229,9 +305,9 @@ public class MainActivity extends AppCompatActivity {
             for(int i = 0; i < imageSize; i++){
                 for(int j = 0; j < imageSize; j++){
                     int val = intValues[pixel++]; //RGB
-                    byteBuffer.putFloat(((val >> 16) & 0xFF) * (1.f/1.f));
-                    byteBuffer.putFloat(((val >> 8) & 0xFF) * (1.f/1.f));
-                    byteBuffer.putFloat((val & 0xFF) * (1.f/1.f));
+                    byteBuffer.putFloat(((val >> 16) & 0xFF) * (1.f/255.f));
+                    byteBuffer.putFloat(((val >> 8) & 0xFF) * (1.f/255.f));
+                    byteBuffer.putFloat((val & 0xFF) * (1.f/255.f));
                 }
             }
 
@@ -254,7 +330,13 @@ public class MainActivity extends AppCompatActivity {
 
             String[] classes = {"CBB", "Healthy"};
             //Display the class of the prediction
-            vggResult.setText(classes[maxPos]);
+            String outputPrediction = classes[maxPos];
+
+            if(outputPrediction.equals("CBB")){
+                vggResult.setText("CBB Infected");
+            } else {
+                vggResult.setText(classes[maxPos]);
+            }
 
             //Get the confidence level
             String outputCon = "";
@@ -262,7 +344,7 @@ public class MainActivity extends AppCompatActivity {
                 outputCon += String.format("%s: %.1f%%\n", classes[i], confidences[i] * 100);
             }
             //set the confidence level to the text view
-            vggConTxt.setText(outputCon);
+            //vggConTxt.setText(outputCon);
 
             // Releases model resources if no longer used.
             model.close();
