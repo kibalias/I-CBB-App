@@ -7,6 +7,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
@@ -14,6 +15,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.text.method.LinkMovementMethod;
 import android.util.Base64;
 import android.view.LayoutInflater;
@@ -44,7 +46,7 @@ import java.nio.ByteOrder;
 public class MainActivity extends AppCompatActivity {
     Button gallery, camera, scan;
     ImageView placeholder, placeholder1;
-    TextView vggResult, resnetResult, vggConTxt, resnetConTxt;
+    TextView vggResult, resnetResult, imageNamePlaceholder;
     Bitmap image = null;
     Bitmap segmentedImage = null;
     String imageString = "";
@@ -60,9 +62,10 @@ public class MainActivity extends AppCompatActivity {
         scan = findViewById(R.id.scan_button);
         vggResult = findViewById(R.id.vggResult);
         resnetResult = findViewById(R.id.resnetResult);
-        resnetConTxt = findViewById(R.id.resnetConfidence);
-        vggConTxt = findViewById(R.id.vggConfidence);
+        //resnetConTxt = findViewById(R.id.resnetConfidence);
+        //vggConTxt = findViewById(R.id.vggConfidence);
         placeholder = findViewById(R.id.image_placeholder);
+        imageNamePlaceholder = findViewById(R.id.imageNamePlaceholder);
 
         //Select Image from Gallery
         gallery.setOnClickListener(new View.OnClickListener() {
@@ -70,8 +73,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 vggResult.setText("Result");
                 resnetResult.setText("Result");
-                vggConTxt.setText("Confidence Level");
-                resnetConTxt.setText("Confidence Level");
+                //vggConTxt.setText("Confidence Level");
+                //resnetConTxt.setText("Confidence Level");
                 Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, 3);
             }
@@ -83,8 +86,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 vggResult.setText("Result");
                 resnetResult.setText("Result");
-                vggConTxt.setText("Confidence Level");
-                resnetConTxt.setText("Confidence Level");
+                //vggConTxt.setText("Confidence Level");
+                //.setText("Confidence Level");
                 if(checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
                     Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(cameraIntent, 1);
@@ -193,6 +196,11 @@ public class MainActivity extends AppCompatActivity {
             }
             else {
                 Uri selectedImage = data.getData();
+                Cursor returnCursor =
+                        getContentResolver().query(selectedImage, null, null, null, null);
+                int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                returnCursor.moveToFirst();
+                imageNamePlaceholder.setText(returnCursor.getString(nameIndex));
 
                 try{
                     image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
@@ -267,7 +275,7 @@ public class MainActivity extends AppCompatActivity {
                 outputCon += String.format("%s: %.1f%%\n", classes[i], confidences[i] * 100);
             }
             //set the confidence level to the text view
-            resnetConTxt.setText(outputCon);
+            //resnetConTxt.setText(outputCon);
 
             // Releases model resources if no longer used.
             model.close();
@@ -337,7 +345,7 @@ public class MainActivity extends AppCompatActivity {
                 outputCon += String.format("%s: %.1f%%\n", classes[i], confidences[i] * 100);
             }
             //set the confidence level to the text view
-            vggConTxt.setText(outputCon);
+            //vggConTxt.setText(outputCon);
 
             // Releases model resources if no longer used.
             model.close();
