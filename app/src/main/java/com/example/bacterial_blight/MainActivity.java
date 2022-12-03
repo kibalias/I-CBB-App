@@ -31,7 +31,7 @@ import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
 import com.example.bacterial_blight.ml.Cbb719healthy746;
-import com.example.bacterial_blight.ml.Vgg1973c71h;
+import com.example.bacterial_blight.ml.Vgg91valacc;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import org.checkerframework.common.subtyping.qual.Bottom;
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     //Resizes the image for classification
 
-                    segmentedImage = Bitmap.createScaledBitmap(segmentedImage, imageSize, imageSize, false);
+                    //segmentedImage = Bitmap.createScaledBitmap(segmentedImage, imageSize, imageSize, false);
 
                     //Pass the image to the models to make a prediction
                     vgg19(segmentedImage);
@@ -235,9 +235,9 @@ public class MainActivity extends AppCompatActivity {
             for(int i = 0; i < imageSize; i++){
                 for(int j = 0; j < imageSize; j++){
                     int val = intValues[pixel++]; //RGB
-                    byteBuffer.putFloat(((val >> 16) & 0xFF) * (1.f/1));
-                    byteBuffer.putFloat(((val >> 8) & 0xFF) * (1.f/1));
-                    byteBuffer.putFloat((val & 0xFF) * (1.f/1));
+                    byteBuffer.putFloat(((val >> 16) & 0xFF) * (1.f/1.f));
+                    byteBuffer.putFloat(((val >> 8) & 0xFF) * (1.f/1.f));
+                    byteBuffer.putFloat((val & 0xFF) * (1.f/1.f));
                 }
             }
 
@@ -290,7 +290,7 @@ public class MainActivity extends AppCompatActivity {
          * and scans through the input image for prediction
          */
         try {
-            Vgg1973c71h model = Vgg1973c71h.newInstance(getApplicationContext());
+            Vgg91valacc model = Vgg91valacc.newInstance(getApplicationContext());
 
             // Creates inputs for reference.
             TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 224, 224, 3}, DataType.FLOAT32);
@@ -305,16 +305,16 @@ public class MainActivity extends AppCompatActivity {
             for(int i = 0; i < imageSize; i++){
                 for(int j = 0; j < imageSize; j++){
                     int val = intValues[pixel++]; //RGB
-                    byteBuffer.putFloat(((val >> 16) & 0xFF) * (1.f/255.f));
-                    byteBuffer.putFloat(((val >> 8) & 0xFF) * (1.f/255.f));
-                    byteBuffer.putFloat((val & 0xFF) * (1.f/255.f));
+                    byteBuffer.putFloat(((val >> 16) & 0xFF) * (1.f/1.f));
+                    byteBuffer.putFloat(((val >> 8) & 0xFF) * (1.f/1.f));
+                    byteBuffer.putFloat((val & 0xFF) * (1.f/1.f));
                 }
             }
 
             inputFeature0.loadBuffer(byteBuffer);
 
             // Runs model inference and gets result.
-            Vgg1973c71h.Outputs outputs = model.process(inputFeature0);
+            Vgg91valacc.Outputs outputs = model.process(inputFeature0);
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
             float[] confidences = outputFeature0.getFloatArray();
@@ -397,6 +397,12 @@ public class MainActivity extends AppCompatActivity {
         //encode to string
         String encodedImage = android.util.Base64.encodeToString(convertedImageByte,Base64.DEFAULT);
         return encodedImage;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, Home_Activity.class);
+        startActivity(intent);
     }
 
     /* ---------------------------------------------

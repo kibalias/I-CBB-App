@@ -7,6 +7,8 @@ import android.icu.text.IDNA;
 import android.media.Image;
 import android.os.Bundle;
 import android.service.controls.Control;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,6 +19,7 @@ public class Result_Activity extends AppCompatActivity {
     TextView InformationHolder, diagnosisContainer,
             Characteristics, Diagnosis1,
             HeaderControl, ControlMeasures;
+
     int imageSize =  224;
 
     @Override
@@ -45,6 +48,8 @@ public class Result_Activity extends AppCompatActivity {
             Diagnosis1.setText(getResources().getString(R.string.CBBdiagnosis1));
 
             HeaderControl.setText("Preventive and Control Measures");
+            ControlMeasures.setText(getResources().getString(R.string.PreventiveMeasures));
+
         }else if(Result.equals("Healthy")){
             InformationHolder.setText("Healthy Cassava Leaf");
             imageInformation.setImageDrawable(getResources().getDrawable(R.drawable.information__1_));
@@ -54,6 +59,7 @@ public class Result_Activity extends AppCompatActivity {
             Diagnosis1.setText(getResources().getString(R.string.Healthydiagnosis1));
 
             HeaderControl.setText("Maintenance");
+            ControlMeasures.setText(getResources().getString(R.string.Maintenance));
         }else{
             InformationHolder.setText("Information Error");
             //ConfirmResult.setText("Confirm Error");
@@ -65,7 +71,16 @@ public class Result_Activity extends AppCompatActivity {
         Bitmap ImgResult = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
         result_fetched_image.setImageBitmap(ImgResult);
 
-
-
+        Button backToClassificationPage = findViewById(R.id.backButton);
+        backToClassificationPage.setOnClickListener (new View.OnClickListener() {
+            @Override
+            public void onClick (View v){
+                backToPage();
+            }
+        });
+    }
+    private void backToPage(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }

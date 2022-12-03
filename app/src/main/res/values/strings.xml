@@ -1,13 +1,14 @@
 <resources>
     <string name="app_name">I-CBB</string>
 
-    <string name="link">Para sa ibang impormasyon:
-        <a href="https://plantix.net/en/library/plant-diseases/300039/cassava-bacterial-blight">https://plantix.net/en/library/plant-diseases/300039/cassava-bacterial-blight</a> </string>
+    <string name="link">Source: https://plantix.net/en/library/plant-diseases/300039/cassava-bacterial-blight </string>
     <string name="loading">Loading...</string>
     <string name="CBBdiagnosis1">•  Leaf spots that have an angular shape and are usually surrounded by yellowing tissue.\n\n•  Infected plant tissue or gum patches may enlarge, combine, and ooze out substance.\n\n•  Gum is initially golden, later forming amber-colored stains.
     </string>
     <string name="Healthydiagnosis1">•  Leaf has a dark green color.\n\n•  Firm, fan-shaped leaves.\n\n•  There is no uncommon discoloration or spotting on the leaf.
     </string>
-    <string name="PreventiveMeasures">•  Cut out infected leaves if only a few leaves show symptoms.\n\n• Debris and weeds around infected plant should be removed and burned or deep buried \n\n• Tools should be regularly disinfected using a bactericide.
+    <string name="PreventiveMeasures">•  Cut out infected leaves if only a few leaves show symptoms.\n\n• Debris and weeds around infected plant should be removed and burned or deep buried. \n\n• Tools should be regularly disinfected using a bactericide.
     </string>
+    <string name="Maintenance">•  Remove leaves showing lesions and blighting.\n\n• Remove and have effective weed management. \n\n• Keep farming materials clean and always disinfect them.
+</string>
 </resources>
