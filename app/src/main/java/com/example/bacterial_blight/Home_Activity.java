@@ -27,9 +27,22 @@ public class Home_Activity extends AppCompatActivity {
                 changeActivity();
             },1000);
         });
+
+        TextView redirectToManual = (TextView) findViewById(R.id.toUse);
+        redirectToManual.setOnClickListener (new View.OnClickListener() {
+            @Override
+            public void onClick (View v){
+                toManual();
+            }
+        });
     }
     private void changeActivity(){
         Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    private void toManual(){
+        Intent intent = new Intent(this, Manual_Activity.class);
         startActivity(intent);
     }
 }
