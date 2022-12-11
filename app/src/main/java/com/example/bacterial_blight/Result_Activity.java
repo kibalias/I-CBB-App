@@ -80,7 +80,6 @@ public class Result_Activity extends AppCompatActivity {
         });
     }
     private void backToPage(){
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        finish();
     }
 }

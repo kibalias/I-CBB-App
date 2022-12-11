@@ -17,15 +17,13 @@ public class Home_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         Button redirectToDetectionPage = findViewById(R.id.start_button);
-        LoadingDialog loadingDialog = new LoadingDialog(Home_Activity.this);
         redirectToDetectionPage.setOnClickListener(v -> {
-            loadingDialog.startLoadingDialog();
+            changeActivity();
+        });
 
-            Handler handler = new Handler();
-            handler.postDelayed(() -> {
-                loadingDialog.dismissDialog();
-                changeActivity();
-            },1000);
+        Button redirectToPreviousImages = findViewById(R.id.PrevImg);
+        redirectToPreviousImages.setOnClickListener(v -> {
+            toPreviousImages();
         });
 
         TextView redirectToManual = (TextView) findViewById(R.id.toUse);
@@ -36,6 +34,12 @@ public class Home_Activity extends AppCompatActivity {
             }
         });
     }
+
+    private void toPreviousImages() {
+        Intent previntent = new Intent(this, PreviousImagesActivity.class);
+        startActivity(previntent);
+    }
+
     private void changeActivity(){
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
@@ -45,4 +49,5 @@ public class Home_Activity extends AppCompatActivity {
         Intent intent = new Intent(this, Manual_Activity.class);
         startActivity(intent);
     }
+
 }

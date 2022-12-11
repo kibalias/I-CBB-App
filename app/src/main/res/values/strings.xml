@@ -18,4 +18,5 @@
     <string name="aboutApp">
         It is an application that can aid in determining if a cassava leaf shows indications of being bacterial blight infected. The word “I-CBB” is a word play for “I SEE Bacterial Blight”.
     </string>
+    <string name="empty_not_saved">Not saved</string>
 </resources>
