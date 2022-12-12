@@ -1,7 +1,9 @@
 package com.example.bacterial_blight;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
@@ -20,6 +22,9 @@ import android.provider.OpenableColumns;
 import android.text.method.LinkMovementMethod;
 import android.util.Base64;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -74,10 +79,15 @@ public class MainActivity extends AppCompatActivity {
         //vggConTxt = findViewById(R.id.vggConfidence);
         placeholder = findViewById(R.id.image_placeholder);
         imageNamePlaceholder = findViewById(R.id.imageNamePlaceholder);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
 
         final PreviousImageAdapter adapter = new PreviousImageAdapter(new PreviousImageAdapter.CassavaDiff());
 
+
         cassavaViewModel = new ViewModelProvider(this).get(CassavaViewModel.class);
+
+
 
         //Select Image from Gallery
         gallery.setOnClickListener(new View.OnClickListener() {
@@ -211,6 +221,28 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(intent, NEW_CASSAVA_ACTIVITY_REQUEST_CODE);
         });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.mainmenu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item){
+        switch (item.getItemId()){
+            case R.id.item1:
+                Intent intent = new Intent(MainActivity.this, PreviousImagesActivity.class);
+                startActivityForResult(intent, NEW_CASSAVA_ACTIVITY_REQUEST_CODE);
+                break;
+            default:
+                break;
+
+
+        }
+        return true;
     }
 
     @Override
