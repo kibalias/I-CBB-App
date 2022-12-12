@@ -2,6 +2,7 @@ package com.example.bacterial_blight;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -44,8 +45,14 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 public class MainActivity extends AppCompatActivity {
+    public static final int NEW_CASSAVA_ACTIVITY_REQUEST_CODE = 5;
+//    public static final String CassavaVggResult = "CassavaVggResult";
+//    public static final String FileName = "FileName";
+//    public static final String CassavaResnetResult = "CassavaResnetResult";
+    private CassavaViewModel cassavaViewModel;
+    private Uri imageUri;
     Button gallery, camera, scan;
-    ImageView placeholder, placeholder1;
+    ImageView placeholder, placeholder1, previousImagesLogo;
     TextView vggResult, resnetResult, imageNamePlaceholder;
     Bitmap image = null;
     Bitmap segmentedImage = null;
@@ -57,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        previousImagesLogo = findViewById(R.id.previousImagesLogo);
         gallery = findViewById(R.id.upload_button);
         camera = findViewById(R.id.capture);
         scan = findViewById(R.id.scan_button);
@@ -66,6 +74,10 @@ public class MainActivity extends AppCompatActivity {
         //vggConTxt = findViewById(R.id.vggConfidence);
         placeholder = findViewById(R.id.image_placeholder);
         imageNamePlaceholder = findViewById(R.id.imageNamePlaceholder);
+
+        final PreviousImageAdapter adapter = new PreviousImageAdapter(new PreviousImageAdapter.CassavaDiff());
+
+        cassavaViewModel = new ViewModelProvider(this).get(CassavaViewModel.class);
 
         //Select Image from Gallery
         gallery.setOnClickListener(new View.OnClickListener() {
@@ -97,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //Scan Button
+        //Predict Button
         LoadingDialog loadingPredictDialog = new LoadingDialog(MainActivity.this);
         scan.setOnClickListener(v -> {
             loadingPredictDialog.startLoadingDialog();
@@ -115,6 +127,24 @@ public class MainActivity extends AppCompatActivity {
                     //Pass the image to the models to make a prediction
                     vgg19(segmentedImage);
                     resNet(segmentedImage);
+
+                    // Save the predicted result
+                    // shouldve comparative statement on the vgg and resnet
+                    String cassavaVggResult = vggResult.getText().toString();
+                    String cassavaResnetResult = resnetResult.getText().toString();
+                    String filename = imageNamePlaceholder.getText().toString();
+
+                    Cassava cassava = new Cassava(filename,
+                                                cassavaVggResult,
+                                                cassavaResnetResult,
+                                                image);
+                    cassavaViewModel.insert(cassava);
+
+                    cassavaViewModel.getCassavaResults().observe(this, cassavas -> {
+                        //Update the cached copy of the cassava in the adapter.
+                        adapter.submitList(cassavas);
+                    });
+
                     loadingPredictDialog.dismissDialog();
                 }
             },1000);
@@ -175,6 +205,12 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         });
+
+        previousImagesLogo.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, PreviousImagesActivity.class);
+            startActivityForResult(intent, NEW_CASSAVA_ACTIVITY_REQUEST_CODE);
+        });
+
     }
 
     @Override
@@ -183,8 +219,9 @@ public class MainActivity extends AppCompatActivity {
          *Get the selected image from the gallery or camera and display to the placeholder
          */
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK){
-            if(requestCode == 1){
+        if(resultCode == RESULT_OK) {
+            // request code for captured image
+            if (requestCode == 1) {
                 image = (Bitmap) data.getExtras().get("data");
                 int dimension = Math.min(image.getWidth(), image.getHeight());
                 image = ThumbnailUtils.extractThumbnail(image, dimension, dimension);
@@ -193,7 +230,8 @@ public class MainActivity extends AppCompatActivity {
                 image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false);
                 segmentation(image);
             }
-            else {
+            // request code for select image
+            else if (requestCode == 3) {
                 Uri selectedImage = data.getData();
                 Cursor returnCursor =
                         getContentResolver().query(selectedImage, null, null, null, null);
@@ -201,15 +239,20 @@ public class MainActivity extends AppCompatActivity {
                 returnCursor.moveToFirst();
                 imageNamePlaceholder.setText(returnCursor.getString(nameIndex));
 
-                try{
+                try {
                     image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
                     placeholder.setImageBitmap(image);
-                } catch (IOException e){
+                } catch (IOException e) {
                     Toast.makeText(MainActivity.this, "An error has occurred.", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
                 }
                 image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false);
                 segmentation(image);
+            }else {
+                Toast.makeText(
+                        getApplicationContext(),
+                        R.string.empty_not_saved,
+                        Toast.LENGTH_LONG).show();
             }
         }
     }
