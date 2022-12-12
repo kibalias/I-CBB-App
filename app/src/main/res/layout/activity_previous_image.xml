@@ -33,6 +33,7 @@
                 android:id="@+id/back"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginStart="25dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -43,8 +44,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="5sp"
-                android:text="Previous Image Taken"
+                android:text="Previous Images Taken"
                 android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/back"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -57,14 +61,25 @@
         android:id="@+id/frame_result_image"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/manual_container"
+        android:paddingStart="10dp"
+        android:paddingTop="15dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/frame_back_header">
+        app:layout_constraintTop_toBottomOf="@id/frame_back_header"
+        tools:scrollbarStyle="insideInset">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/imagelist_results"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:scrollbarAlwaysDrawVerticalTrack="true"
+            android:scrollbars="vertical" />
     </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

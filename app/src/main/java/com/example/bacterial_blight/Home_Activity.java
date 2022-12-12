@@ -21,11 +21,6 @@ public class Home_Activity extends AppCompatActivity {
             changeActivity();
         });
 
-        Button redirectToPreviousImages = findViewById(R.id.PrevImg);
-        redirectToPreviousImages.setOnClickListener(v -> {
-            toPreviousImages();
-        });
-
         TextView redirectToManual = (TextView) findViewById(R.id.toUse);
         redirectToManual.setOnClickListener (new View.OnClickListener() {
             @Override
@@ -33,11 +28,6 @@ public class Home_Activity extends AppCompatActivity {
                 toManual();
             }
         });
-    }
-
-    private void toPreviousImages() {
-        Intent previntent = new Intent(this, PreviousImagesActivity.class);
-        startActivity(previntent);
     }
 
     private void changeActivity(){
