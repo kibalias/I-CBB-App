@@ -36,7 +36,7 @@ import android.widget.Toast;
 import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
-import com.example.bacterial_blight.ml.Cbb719healthy746;
+import com.example.bacterial_blight.ml.Resnet71c75h;
 import com.example.bacterial_blight.ml.Vgg91valacc;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
@@ -84,10 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
         final PreviousImageAdapter adapter = new PreviousImageAdapter(new PreviousImageAdapter.CassavaDiff());
 
-
         cassavaViewModel = new ViewModelProvider(this).get(CassavaViewModel.class);
-
-
 
         //Select Image from Gallery
         gallery.setOnClickListener(new View.OnClickListener() {
@@ -167,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
                 // get the prediction result
                 String getResult =  vggResult.getText().toString();
 
-                // make bitmap image into byte array
+                // convert bitmap image into byte array
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 image.compress(Bitmap.CompressFormat.PNG, 100, stream);
                 byte[] byteArray = stream.toByteArray();
@@ -255,8 +252,8 @@ public class MainActivity extends AppCompatActivity {
             // request code for captured image
             if (requestCode == 1) {
                 image = (Bitmap) data.getExtras().get("data");
-                int dimension = Math.min(image.getWidth(), image.getHeight());
-                image = ThumbnailUtils.extractThumbnail(image, dimension, dimension);
+                //int dimension = Math.min(image.getWidth(), image.getHeight());
+                //image = ThumbnailUtils.extractThumbnail(image, dimension, dimension);
                 placeholder.setImageBitmap(image);
 
                 image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false);
@@ -295,7 +292,7 @@ public class MainActivity extends AppCompatActivity {
          * and scans through the input image for prediction
          */
         try {
-            Cbb719healthy746 model = Cbb719healthy746.newInstance(getApplicationContext());
+            Resnet71c75h model = Resnet71c75h.newInstance(getApplicationContext());
 
             // Creates inputs for reference.
             TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 224, 224, 3}, DataType.FLOAT32);
@@ -319,7 +316,7 @@ public class MainActivity extends AppCompatActivity {
             inputFeature0.loadBuffer(byteBuffer);
 
             // Runs model inference and gets result.
-            Cbb719healthy746.Outputs outputs = model.process(inputFeature0);
+            Resnet71c75h.Outputs outputs = model.process(inputFeature0);
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
             float[] confidences = outputFeature0.getFloatArray();
