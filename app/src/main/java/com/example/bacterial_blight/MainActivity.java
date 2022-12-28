@@ -37,7 +37,7 @@ import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
 import com.example.bacterial_blight.ml.Resnet71c75h;
-import com.example.bacterial_blight.ml.Vgg91valacc;
+import com.example.bacterial_blight.ml.Vgg1227145c147h;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import org.checkerframework.common.subtyping.qual.Bottom;
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     private Uri imageUri;
     Button gallery, camera, scan;
     ImageView placeholder, placeholder1, previousImagesLogo;
-    TextView vggResult, resnetResult, imageNamePlaceholder;
+    TextView vggResult, resnetResult, imageNamePlaceholder, vggConTxt, resnetConTxt;
     Bitmap image = null;
     Bitmap segmentedImage = null;
     String imageString = "";
@@ -75,8 +75,8 @@ public class MainActivity extends AppCompatActivity {
         scan = findViewById(R.id.scan_button);
         vggResult = findViewById(R.id.vggResult);
         resnetResult = findViewById(R.id.resnetResult);
-        //resnetConTxt = findViewById(R.id.resnetConfidence);
-        //vggConTxt = findViewById(R.id.vggConfidence);
+        resnetConTxt = findViewById(R.id.resnetConfidence);
+        vggConTxt = findViewById(R.id.vggConfidence);
         placeholder = findViewById(R.id.image_placeholder);
         imageNamePlaceholder = findViewById(R.id.imageNamePlaceholder);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
@@ -92,8 +92,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 vggResult.setText("Result");
                 resnetResult.setText("Result");
-                //vggConTxt.setText("Confidence Level");
-                //resnetConTxt.setText("Confidence Level");
+                vggConTxt.setText("Confidence");
+                resnetConTxt.setText("Confidence");
                 Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, 3);
             }
@@ -105,8 +105,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 vggResult.setText("Result");
                 resnetResult.setText("Result");
-                //vggConTxt.setText("Confidence Level");
-                //.setText("Confidence Level");
+                vggConTxt.setText("Confidence");
+                resnetConTxt.setText("Confidence");
                 if(checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
                     Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(cameraIntent, 1);
@@ -128,7 +128,6 @@ public class MainActivity extends AppCompatActivity {
                     loadingPredictDialog.dismissDialog();
                 } else {
                     //Resizes the image for classification
-
                     //segmentedImage = Bitmap.createScaledBitmap(segmentedImage, imageSize, imageSize, false);
 
                     //Pass the image to the models to make a prediction
@@ -237,7 +236,6 @@ public class MainActivity extends AppCompatActivity {
             default:
                 break;
 
-
         }
         return true;
     }
@@ -337,16 +335,19 @@ public class MainActivity extends AppCompatActivity {
             if(outputPrediction.equals("CBB")){
                 resnetResult.setText("CBB Infected");
             } else {
-                resnetResult.setText(classes[maxPos]);
+                resnetResult.setText("Not Infected");
             }
 
-            //Get the confidence level
+            //Set the confidence level
             String outputCon = "";
-            for(int i = 0; i < classes.length; i++){
-                outputCon += String.format("%s: %.1f%%\n", classes[i], confidences[i] * 100);
+            if(confidences[0] > confidences[1]){
+                outputCon = String.format("%.1f%%",  confidences[0] * 100);
+            } else {
+                outputCon = String.format("%.1f%%",  confidences[1] * 100);
             }
+
             //set the confidence level to the text view
-            //resnetConTxt.setText(outputCon);
+            resnetConTxt.setText(outputCon);
 
             // Releases model resources if no longer used.
             model.close();
@@ -362,7 +363,7 @@ public class MainActivity extends AppCompatActivity {
          * and scans through the input image for prediction
          */
         try {
-            Vgg91valacc model = Vgg91valacc.newInstance(getApplicationContext());
+            Vgg1227145c147h model = Vgg1227145c147h.newInstance(getApplicationContext());
 
             // Creates inputs for reference.
             TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 224, 224, 3}, DataType.FLOAT32);
@@ -377,16 +378,16 @@ public class MainActivity extends AppCompatActivity {
             for(int i = 0; i < imageSize; i++){
                 for(int j = 0; j < imageSize; j++){
                     int val = intValues[pixel++]; //RGB
-                    byteBuffer.putFloat(((val >> 16) & 0xFF) * (1.f/1.f));
-                    byteBuffer.putFloat(((val >> 8) & 0xFF) * (1.f/1.f));
-                    byteBuffer.putFloat((val & 0xFF) * (1.f/1.f));
+                    byteBuffer.putFloat(((val >> 16) & 0xFF) * (1.f/255.f));
+                    byteBuffer.putFloat(((val >> 8) & 0xFF) * (1.f/255.f));
+                    byteBuffer.putFloat((val & 0xFF) * (1.f/255.f));
                 }
             }
 
             inputFeature0.loadBuffer(byteBuffer);
 
             // Runs model inference and gets result.
-            Vgg91valacc.Outputs outputs = model.process(inputFeature0);
+            Vgg1227145c147h.Outputs outputs = model.process(inputFeature0);
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
             float[] confidences = outputFeature0.getFloatArray();
@@ -407,16 +408,19 @@ public class MainActivity extends AppCompatActivity {
             if(outputPrediction.equals("CBB")){
                 vggResult.setText("CBB Infected");
             } else {
-                vggResult.setText(classes[maxPos]);
+                vggResult.setText("Not Infected");
             }
 
             //Get the confidence level
             String outputCon = "";
-            for(int i = 0; i < classes.length; i++){
-                outputCon += String.format("%s: %.1f%%\n", classes[i], confidences[i] * 100);
+
+            if(confidences[0] > confidences[1]){
+                outputCon = String.format("%.1f%%",  confidences[0] * 100);
+            } else {
+                outputCon = String.format("%.1f%%",  confidences[1] * 100);
             }
             //set the confidence level to the text view
-            //vggConTxt.setText(outputCon);
+            vggConTxt.setText(outputCon);
 
             // Releases model resources if no longer used.
             model.close();
